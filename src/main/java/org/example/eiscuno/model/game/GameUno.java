@@ -1,6 +1,7 @@
 package org.example.eiscuno.model.game;
 
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
@@ -65,7 +66,7 @@ public class GameUno implements IGameUno {
      * @param card The card to be placed on the table.
      */
     @Override
-    public void playCard(Card card) {
+    public void playCard(ICard card) {
         this.table.addCardOnTheTable(card);
     }
 
@@ -90,10 +91,10 @@ public class GameUno implements IGameUno {
      * @return An array of cards visible to the human player.
      */
     @Override
-    public Card[] getCurrentVisibleCardsHumanPlayer(int posInitCardToShow) {
+    public ICard[] getCurrentVisibleCardsHumanPlayer(int posInitCardToShow) {
         int totalCards = this.humanPlayer.getCardsPlayer().size();
         int numVisibleCards = Math.min(4, totalCards - posInitCardToShow);
-        Card[] cards = new Card[numVisibleCards];
+        ICard[] cards = new ICard[numVisibleCards];
 
         for (int i = 0; i < numVisibleCards; i++) {
             cards[i] = this.humanPlayer.getCard(posInitCardToShow + i);

@@ -2,6 +2,7 @@ package org.example.eiscuno.model.machine;
 
 import javafx.scene.image.ImageView;
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 
@@ -35,7 +36,7 @@ public class ThreadPlayMachine extends Thread {
 
     private void putCardOnTheTable(){
         int index = (int) (Math.random() * machinePlayer.getCardsPlayer().size());
-        Card card = machinePlayer.getCard(index);
+        ICard card = machinePlayer.getCard(index);
         table.addCardOnTheTable(card);
         tableImageView.setImage(card.getImage());
     }

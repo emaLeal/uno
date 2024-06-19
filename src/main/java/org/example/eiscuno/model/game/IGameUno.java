@@ -1,6 +1,7 @@
 package org.example.eiscuno.model.game;
 
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.player.Player;
 
 /**
@@ -26,7 +27,7 @@ public interface IGameUno {
      *
      * @param card the card to be played
      */
-    void playCard(Card card);
+    void playCard(ICard card);
 
     /**
      * Handles the action when a player shouts "Uno".
@@ -41,7 +42,7 @@ public interface IGameUno {
      * @param posInitCardToShow the starting position of the cards to be shown
      * @return an array of cards that are currently visible to the human player
      */
-    Card[] getCurrentVisibleCardsHumanPlayer(int posInitCardToShow);
+    ICard[] getCurrentVisibleCardsHumanPlayer(int posInitCardToShow);
 
     /**
      * Checks if the game is over.

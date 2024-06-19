@@ -1,13 +1,14 @@
 package org.example.eiscuno.model.machine;
 
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.card.ICard;
 
 import java.util.ArrayList;
 
 public class ThreadSingUNOMachine implements Runnable{
-    private ArrayList<Card> cardsPlayer;
+    private ArrayList<ICard> cardsPlayer;
 
-    public ThreadSingUNOMachine(ArrayList<Card> cardsPlayer){
+    public ThreadSingUNOMachine(ArrayList<ICard> cardsPlayer){
         this.cardsPlayer = cardsPlayer;
     }
 

@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.machine.ThreadPlayMachine;
@@ -74,10 +75,10 @@ public class GameUnoController {
      */
     private void printCardsHumanPlayer() {
         this.gridPaneCardsPlayer.getChildren().clear();
-        Card[] currentVisibleCardsHumanPlayer = this.gameUno.getCurrentVisibleCardsHumanPlayer(this.posInitCardToShow);
+        ICard[] currentVisibleCardsHumanPlayer = this.gameUno.getCurrentVisibleCardsHumanPlayer(this.posInitCardToShow);
 
         for (int i = 0; i < currentVisibleCardsHumanPlayer.length; i++) {
-            Card card = currentVisibleCardsHumanPlayer[i];
+            ICard card = currentVisibleCardsHumanPlayer[i];
             ImageView cardImageView = card.getCard();
 
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
@@ -95,20 +96,12 @@ public class GameUnoController {
 
     private void printCardsMachine() {
         this.gridPaneCardsMachine.getChildren().clear();
-        ArrayList<Card> currentVisibleMachine = this.machinePlayer.getCardsPlayer();
+        ArrayList<ICard> currentVisibleMachine = this.machinePlayer.getCardsPlayer();
 
         for (int i = 0; i < currentVisibleMachine.size(); i++) {
-            Card card = currentVisibleMachine.get(i);
+            ICard card = currentVisibleMachine.get(i);
             ImageView cardImageView = card.getCard();
 
-            cardImageView.setOnMouseClicked((MouseEvent event) -> {
-                // Aqui deberian verificar si pueden en la tabla jugar esa carta
-                gameUno.playCard(card);
-                tableImageView.setImage(card.getImage());
-                humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                threadPlayMachine.setHasPlayerPlayed(true);
-                printCardsHumanPlayer();
-            });
 
             this.gridPaneCardsMachine.add(cardImageView, i, 0);
         }
@@ -120,7 +113,7 @@ public class GameUnoController {
      * @param card the card to find
      * @return the position of the card, or -1 if not found
      */
-    private Integer findPosCardsHumanPlayer(Card card) {
+    private Integer findPosCardsHumanPlayer(ICard card) {
         for (int i = 0; i < this.humanPlayer.getCardsPlayer().size(); i++) {
             if (this.humanPlayer.getCardsPlayer().get(i).equals(card)) {
                 return i;
