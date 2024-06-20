@@ -47,6 +47,9 @@ public class CardAction implements ICard{
     public String getColor() {
         return color;
     }
+    public String getNumber(){
+        return null;
+    }
 
     public void setColor(String color) {
         this.color = color;

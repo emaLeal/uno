@@ -101,6 +101,10 @@ public class Deck {
         return deckOfCards.pop();
     }
 
+    public Stack<ICard> GetCards(){
+        return deckOfCards;
+    }
+
     /**
      * Checks if the deck is empty.
      *

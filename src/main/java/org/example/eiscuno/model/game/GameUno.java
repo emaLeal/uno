@@ -102,6 +102,10 @@ public class GameUno implements IGameUno {
         return cards;
     }
 
+    public int sizeDeck(){
+        return deck.GetCards().size();
+    }
+
     /**
      * Checks if the game is over.
      *

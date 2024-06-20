@@ -2,9 +2,11 @@ package org.example.eiscuno.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.example.eiscuno.model.card.*;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
@@ -31,6 +33,13 @@ public class GameUnoController {
 
     @FXML
     private ImageView tableImageView;
+    @FXML
+    private Label labelMachine;
+
+    @FXML
+    private Label labelTable;
+    @FXML
+    private VBox idChooseColor;
 
     private Player humanPlayer;
     private Player machinePlayer;
@@ -38,7 +47,6 @@ public class GameUnoController {
     private Table table;
     private GameUno gameUno;
     private int posInitCardToShow;
-
     private ThreadSingUNOMachine threadSingUNOMachine;
     private ThreadPlayMachine threadPlayMachine;
 
@@ -50,15 +58,14 @@ public class GameUnoController {
         initVariables();
         this.gameUno.startGame();
         printCardsHumanPlayer();
-
+        updateLabel();
         threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer());
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.gridPaneCardsMachine,this.gameUno);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.gridPaneCardsMachine,this.gameUno, this.labelTable, this.labelMachine);
         threadPlayMachine.start();
 
-        // empezar una carta
         String[] opciones = {"GREEN", "YELLOW", "RED", "BLUE"};
         int cardNumber = new Random().nextInt(10);
         int pos = new Random().nextInt(4);
@@ -73,7 +80,7 @@ public class GameUnoController {
     /**
      * Initializes the variables for the game.
      */
-    private void initVariables() {
+        private void initVariables() {
         this.humanPlayer = new Player("HUMAN_PLAYER");
         this.machinePlayer = new Player("MACHINE_PLAYER");
         this.deck = new Deck();
@@ -100,9 +107,11 @@ public class GameUnoController {
                         gameUno.playCard(card);
                         tableImageView.setImage(card.getImage());
                         humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                        threadPlayMachine.setHasPlayerPlayed(true);
+                        if (!card.getName().name().startsWith("SKIP")){
+                            threadPlayMachine.setHasPlayerPlayed(true);
+                        }
                         printCardsHumanPlayer();
-
+                        updateLabel();
                     }
                 }catch (Error e) {
                     System.out.println(e);
@@ -133,65 +142,37 @@ public class GameUnoController {
         ICard currentGenericCard = table.getCurrentCardOnTheTable();
         boolean isPossible = false;
 
-        switch (currentGenericCard.getType()) {
+        System.out.println(card.getType());
+        switch (card.getType()) {
             case "Numero":{
-                CardNumber currentBoardCard = (CardNumber) currentGenericCard;
-                switch (card.getType()) {
-                    case "Numero": {
-                        CardNumber currentCard = (CardNumber) card;
-                        if (Objects.equals(currentBoardCard.getColor(), currentCard.getColor()) || Objects.equals(currentBoardCard.getNumber(), currentCard.getNumber()))
-                            isPossible = true;
-                        break;
-                    }
-                    case "Accion": {
-                        CardAction currentCard = (CardAction) card;
-                        if (currentBoardCard.getColor() == currentCard.getColor()){
-                            System.out.println(currentBoardCard.getColor());
-                            System.out.println(currentCard.getColor());
-                            isPossible = true;
-                        }
-                        break;
-                    }
-                    case "Especial": {
-                        CardSpecial currentCard = (CardSpecial) card;
-                        isPossible = true;
-                        break;
-                    }
-                    default:
-                        System.out.println(":D");
-                        break;
-                }
+
+                if (Objects.equals(currentGenericCard.getColor(), card.getColor()) || Objects.equals(currentGenericCard.getNumber(), card.getNumber()) || Objects.equals(currentGenericCard.getType(), "Especial"))
+                    isPossible = true;
                 break;
+
             }
             case "Accion": {
-                CardAction currentBoardCard = (CardAction) currentGenericCard;
-                switch (card.getType()) {
-                    case "Numero":{
-                        CardNumber currentCard = (CardNumber) card;
-                        if (currentBoardCard.getColor() == currentCard.getColor())
-                            isPossible = true;
-                        break;
-                    }
-                    case "Accion": {
-                        CardAction currentCard = (CardAction) card;
-                        String typeCurrentBoardCard = currentBoardCard.getName().name().split("_")[0];
-                        String typeCurrentCard = currentCard.getName().name().split("_")[0];
+                String typeCurrentBoardCard = currentGenericCard.getName().name().split("_")[0];
+                String typeCurrentCard = card.getName().name().split("_")[0];
 
-                        if (typeCurrentBoardCard == typeCurrentCard || currentBoardCard.getColor() == currentCard.getColor())
-                            isPossible = true;
-                        break;
+                if (Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentGenericCard.getColor(), card.getColor()) || Objects.equals(currentGenericCard.getType(), "Especial"))
+                    {
+                        if(Objects.equals(typeCurrentCard, "TWO")) {
+                            gameUno.eatCard(machinePlayer, 2);
                     }
-                    case "Especial": {
-                        CardSpecial currentCard = (CardSpecial) card;
-                        isPossible = true;
-                        break;
-                    }
+                    isPossible = true;
                 }
                 break;
             }
             case "Especial":
-                CardSpecial currentBoardCard = (CardSpecial) card;
-               
+                String typeCurrentCard = card.getName().name().split("_")[0];
+                System.out.println(typeCurrentCard);
+                if(Objects.equals(typeCurrentCard, "FOUR")){
+                    gameUno.eatCard(machinePlayer, 4);
+                    idChooseColor.setVisible(true);
+                }else if(Objects.equals(typeCurrentCard, "WILD")){
+                    idChooseColor.setVisible(true);
+                }
                 isPossible = true;
             default:
                 System.out.println(":D");
@@ -229,13 +210,18 @@ public class GameUnoController {
     /**
      * Handles the action of taking a card.
      *
-     * @param event the action event
      */
     @FXML
-    void onHandleTakeCard(ActionEvent event) {
+    void onHandleTakeCard() {
         // Implement logic to take a card here
         gameUno.eatCard(humanPlayer, 1);
+        updateLabel();
         printCardsHumanPlayer();
+    }
+
+    void updateLabel(){
+        labelTable.setText("Total de cartas : " + deck.GetCards().size());
+        labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
     }
 
     /**
@@ -246,6 +232,10 @@ public class GameUnoController {
     @FXML
     void onHandleUno(ActionEvent event) {
         // Implement logic to handle Uno event here
+    }
+    @FXML
+    void chooseColor(ActionEvent event){
+        idChooseColor.setVisible(false);
     }
 
 

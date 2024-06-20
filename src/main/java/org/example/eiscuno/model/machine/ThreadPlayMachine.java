@@ -2,6 +2,7 @@ package org.example.eiscuno.model.machine;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import org.example.eiscuno.model.card.Card;
@@ -20,14 +21,18 @@ public class ThreadPlayMachine extends Thread {
     private GameUno gameUno;
     private GridPane gridPaneCardsMachine;
     private volatile boolean hasPlayerPlayed;
+    private Label labelTable;
+    private Label labelMachine;
 
-    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno,Label labelTable, Label labelMachine) {
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.table = table;
         this.machinePlayer = machinePlayer;
         this.tableImageView = tableImageView;
         this.hasPlayerPlayed = false;
         this.gameUno = gameUno;
+        this.labelMachine = labelMachine;
+        this.labelTable = labelTable;
         printCardsMachine();
     }
 
@@ -56,40 +61,47 @@ public class ThreadPlayMachine extends Thread {
         for (ICard card : machinePlayer.getCardsPlayer()) {
             String typeCurrentBoardCard = currentCardOnBoard.getName().name().split("_")[0];
             String typeCurrentCard = card.getName().name().split("_")[0];
-            if (Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentCardOnBoard.getColor(), card.getColor()) || card.getType() == "Especial") {
+            if (Objects.equals(currentCardOnBoard.getNumber(), card.getNumber()) ||Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentCardOnBoard.getColor(), card.getColor()) || Objects.equals(card.getType(), "Especial")) {
+
                 index = machinePlayer.getCardsPlayer().indexOf(card);
                 machinePlayer.removeCard(index);
-
+                Platform.runLater(this::updateLabel);
                 table.addCardOnTheTable(card);
                 tableImageView.setImage(card.getImage());
                 found = true;
                 break;
             }
 
-
-            if (!found) {
-
-            }
-
+        }
+        if (!found) {
+            gameUno.eatCard(machinePlayer,1);
+            putCardOnTheTable();
         }
     }
-        private void printCardsMachine () {
-            gridPaneCardsMachine.getChildren().clear();
-            ArrayList<ICard> currentVisibleMachine = machinePlayer.getCardsPlayer();
-
-            for (int i = 0; i < currentVisibleMachine.size(); i++) {
-
-                ICard card = currentVisibleMachine.get(i);
-
-                ImageView cardImageView = card.getCard();
 
 
-                gridPaneCardsMachine.add(cardImageView, i, 0);
-            }
+    private void printCardsMachine () {
+        gridPaneCardsMachine.getChildren().clear();
+        ArrayList<ICard> currentVisibleMachine = machinePlayer.getCardsPlayer();
+
+        for (int i = 0; i < currentVisibleMachine.size(); i++) {
+
+            ICard card = currentVisibleMachine.get(i);
+
+            ImageView cardImageView = card.getCard();
+
+
+            gridPaneCardsMachine.add(cardImageView, i, 0);
         }
+    }
 
-        public void setHasPlayerPlayed ( boolean hasPlayerPlayed){
-            this.hasPlayerPlayed = hasPlayerPlayed;
-        }
+    public void setHasPlayerPlayed ( boolean hasPlayerPlayed){
+        this.hasPlayerPlayed = hasPlayerPlayed;
+    }
+
+    private void updateLabel(){
+        labelTable.setText("Total de cartas : " + gameUno.sizeDeck());
+        labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
+    }
 }
 
