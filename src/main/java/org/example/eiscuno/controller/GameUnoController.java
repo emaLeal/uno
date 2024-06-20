@@ -55,9 +55,8 @@ public class GameUnoController {
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.gridPaneCardsMachine,this.gameUno);
         threadPlayMachine.start();
-        printCardsMachine();
 
         // empezar una carta
         String[] opciones = {"GREEN", "YELLOW", "RED", "BLUE"};
@@ -68,6 +67,7 @@ public class GameUnoController {
         ICard initialCard = factoryCard.createCard(value.getFilePath(), "Numero", opciones[pos], String.valueOf(cardNumber), null , value);
         gameUno.playCard(initialCard);
         tableImageView.setImage(initialCard.getImage());
+
     }
 
     /**
@@ -94,13 +94,18 @@ public class GameUnoController {
             ImageView cardImageView = card.getCard();
 
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
-                if (isCardPossible(card)) {
-                    // Aqui deberian verificar si pueden en la tabla jugar esa carta
-                    gameUno.playCard(card);
-                    tableImageView.setImage(card.getImage());
-                    humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                    threadPlayMachine.setHasPlayerPlayed(true);
-                    printCardsHumanPlayer();
+                // Aqui deberian verificar si pueden en la tabla jugar esa carta
+                try {
+                    if (isCardPossible(card)) {
+                        gameUno.playCard(card);
+                        tableImageView.setImage(card.getImage());
+                        humanPlayer.removeCard(findPosCardsHumanPlayer(card));
+                        threadPlayMachine.setHasPlayerPlayed(true);
+                        printCardsHumanPlayer();
+
+                    }
+                }catch (Error e) {
+                    System.out.println(e);
                 }
             });
 
@@ -108,18 +113,6 @@ public class GameUnoController {
         }
     }
 
-    private void printCardsMachine() {
-        this.gridPaneCardsMachine.getChildren().clear();
-        ArrayList<ICard> currentVisibleMachine = this.machinePlayer.getCardsPlayer();
-
-        for (int i = 0; i < currentVisibleMachine.size(); i++) {
-            ICard card = currentVisibleMachine.get(i);
-            ImageView cardImageView = card.getCard();
-
-
-            this.gridPaneCardsMachine.add(cardImageView, i, 0);
-        }
-    }
 
     /**
      * Finds the position of a specific card in the human player's hand.
@@ -145,17 +138,13 @@ public class GameUnoController {
                 CardNumber currentBoardCard = (CardNumber) currentGenericCard;
                 switch (card.getType()) {
                     case "Numero": {
-                        System.out.println("Numero Numero");
                         CardNumber currentCard = (CardNumber) card;
                         if (Objects.equals(currentBoardCard.getColor(), currentCard.getColor()) || Objects.equals(currentBoardCard.getNumber(), currentCard.getNumber()))
                             isPossible = true;
                         break;
                     }
                     case "Accion": {
-                        System.out.println("Numero Accion");
                         CardAction currentCard = (CardAction) card;
-                        System.out.println(currentBoardCard.getColor());
-                        System.out.println(currentCard.getColor());
                         if (currentBoardCard.getColor() == currentCard.getColor()){
                             System.out.println(currentBoardCard.getColor());
                             System.out.println(currentCard.getColor());
@@ -164,7 +153,6 @@ public class GameUnoController {
                         break;
                     }
                     case "Especial": {
-                        System.out.println("Numero Especial");
                         CardSpecial currentCard = (CardSpecial) card;
                         isPossible = true;
                         break;
@@ -176,23 +164,24 @@ public class GameUnoController {
                 break;
             }
             case "Accion": {
-
                 CardAction currentBoardCard = (CardAction) currentGenericCard;
                 switch (card.getType()) {
                     case "Numero":{
-                        System.out.println("Accion Numero");
-                        CardAction currentCard = (CardAction) card;
-                        if (currentBoardCard.getColor() == currentCard.getColor()) isPossible = true;
+                        CardNumber currentCard = (CardNumber) card;
+                        if (currentBoardCard.getColor() == currentCard.getColor())
+                            isPossible = true;
                         break;
                     }
                     case "Accion": {
-                        System.out.println("Accion Accion");
                         CardAction currentCard = (CardAction) card;
-                        if (currentBoardCard.getName() == currentCard.getName() || currentBoardCard.getColor() == currentCard.getColor()) isPossible = true;
+                        String typeCurrentBoardCard = currentBoardCard.getName().name().split("_")[0];
+                        String typeCurrentCard = currentCard.getName().name().split("_")[0];
+
+                        if (typeCurrentBoardCard == typeCurrentCard || currentBoardCard.getColor() == currentCard.getColor())
+                            isPossible = true;
                         break;
                     }
                     case "Especial": {
-                        System.out.println("Accion Especial");
                         CardSpecial currentCard = (CardSpecial) card;
                         isPossible = true;
                         break;
@@ -202,20 +191,8 @@ public class GameUnoController {
             }
             case "Especial":
                 CardSpecial currentBoardCard = (CardSpecial) card;
-                switch (card.getType()) {
-                    case "Numero":
-                        isPossible = true;
-                        break;
-                    case "Accion":
-                        isPossible = true;
-                        break;
-                    case "Especial":
-                        isPossible = true;
-                        break;
-                    default:
-                        System.out.println(":D");
-                        break;
-                }
+               
+                isPossible = true;
             default:
                 System.out.println(":D");
                 break;
@@ -257,6 +234,8 @@ public class GameUnoController {
     @FXML
     void onHandleTakeCard(ActionEvent event) {
         // Implement logic to take a card here
+        gameUno.eatCard(humanPlayer, 1);
+        printCardsHumanPlayer();
     }
 
     /**
@@ -268,4 +247,6 @@ public class GameUnoController {
     void onHandleUno(ActionEvent event) {
         // Implement logic to handle Uno event here
     }
+
+
 }

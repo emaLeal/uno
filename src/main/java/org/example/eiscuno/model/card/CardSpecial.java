@@ -11,7 +11,7 @@ public class CardSpecial implements ICard{
     private ImageView cardImageView;
     private EISCUnoEnum name;
 
-    public CardSpecial(String url, String type, EISCUnoEnum name){
+    public CardSpecial(String url, String color, String type, EISCUnoEnum name){
         this.url = url;
         this.type = type;
         this.image = new Image(String.valueOf(getClass().getResource(url)));
@@ -42,6 +42,9 @@ public class CardSpecial implements ICard{
         return type;
     }
 
+    public String getColor() {
+        return null;
+    }
     public EISCUnoEnum getName() {
         return name;
     }

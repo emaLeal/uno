@@ -27,21 +27,21 @@ public class Deck {
     private void initializeDeck() {
         for (EISCUnoEnum cardEnum : EISCUnoEnum.values()) {
             FactoryCard factoryCard = new FactoryCard();
+            ICard card = null;
+
             if (cardEnum.name().startsWith("GREEN_") ||
                     cardEnum.name().startsWith("YELLOW_") ||
                     cardEnum.name().startsWith("BLUE_") ||
                     cardEnum.name().startsWith("RED_")) {
-                ICard card = factoryCard.createCard(cardEnum.getFilePath(), "Numero",getCardColor(cardEnum.name()), getCardValue(cardEnum.name()),null, cardEnum);
+                card = factoryCard.createCard(cardEnum.getFilePath(), "Numero",getCardColor(cardEnum.name()), getCardValue(cardEnum.name()),null, cardEnum);
                 //Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()));
-                deckOfCards.push(card);
-            }else if(cardEnum.name().startsWith("SKIP_") || cardEnum.name().startsWith("RESERVE_") ||cardEnum.name().startsWith("TWO_WILD_DRAW_") ){
-                ICard card = factoryCard.createCard(cardEnum.getFilePath(), "Accion",getCardColor(cardEnum.name()), null,"Accion", cardEnum);
-
-                deckOfCards.push(card);
-            }else if(cardEnum.name().equals("FOUR_WILD_DRAW") || cardEnum.name().equals("WILD")){
-                ICard card = factoryCard.createCard(cardEnum.getFilePath(), "Especial", null, null,"Especial", cardEnum);
-                deckOfCards.push(card);
-            }
+            }else if(cardEnum.name().startsWith("SKIP_") || cardEnum.name().startsWith("RESERVE_") ||cardEnum.name().startsWith("TWO_WILD_DRAW_") )
+                card = factoryCard.createCard(cardEnum.getFilePath(), "Accion",getCardColor(cardEnum.name()), null,"Accion", cardEnum);
+            else if(cardEnum.name().equals("FOUR_WILD_DRAW") || cardEnum.name().equals("WILD"))
+                card = factoryCard.createCard(cardEnum.getFilePath(), "Especial", null, null,"Especial", cardEnum);
+            else
+                continue;
+            deckOfCards.push(card);
         }
 
         Collections.shuffle(deckOfCards);
@@ -75,13 +75,13 @@ public class Deck {
     }
 
     private String getCardColor(String name){
-        if(name.startsWith("GREEN")){
+        if(name.contains("GREEN")){
             return "GREEN";
-        } else if(name.startsWith("YELLOW")){
+        } else if(name.contains("YELLOW")){
             return "YELLOW";
-        } else if(name.startsWith("BLUE")){
+        } else if(name.contains("BLUE")){
             return "BLUE";
-        } else if(name.startsWith("RED")){
+        } else if(name.contains(    "RED")){
             return "RED";
         } else {
             return null;

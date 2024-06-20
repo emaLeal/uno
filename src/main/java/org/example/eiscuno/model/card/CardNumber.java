@@ -2,6 +2,7 @@ package org.example.eiscuno.model.card;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
 public class CardNumber implements ICard{
 
@@ -10,9 +11,12 @@ public class CardNumber implements ICard{
     private ImageView cardImageView;
     private Image image;
     private String type;
+    private EISCUnoEnum name;
     private String url;
 
-    public CardNumber(String url, String color, String number){
+    public CardNumber(String url, String color, String number, EISCUnoEnum name){
+
+        this.name = name;
         this.url = url;
         this.color = color;
         this.number = number;
@@ -58,5 +62,10 @@ public class CardNumber implements ICard{
     @Override
     public String getType() {
         return type;
+    }
+
+    @Override
+    public EISCUnoEnum getName() {
+        return name;
     }
 }

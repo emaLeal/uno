@@ -5,16 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="implementar FactoryCard">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/ICard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/ICard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" afterDir="false" />
+    </list>
+    <list id="3a30ace5-b1f3-4ee4-be07-38c037db791b" name="Changes by jaque" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardNumber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/FactoryCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/FactoryCard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/ICard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/ICard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +57,68 @@
     &quot;accountId&quot;: &quot;0c82e6b4-a45c-4190-a110-02ef4a3ff1b6&quot;
   }
 }</component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java">
+      <ranges>
+        <range start1="13" end1="14" start2="13" end2="14" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="44" end1="44" start2="44" end2="47" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/ICard.java">
+      <ranges>
+        <range start1="4" end1="4" start2="4" end2="5" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="11" end1="11" start2="12" end2="14" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java">
+      <ranges>
+        <range start1="2" end1="2" start2="2" end2="4" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="3" end1="3" start2="5" end2="6" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="5" end1="5" start2="8" end2="9" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="7" end1="7" start2="11" end2="14" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="12" end1="12" start2="19" end2="21" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="14" end1="15" start2="23" end2="25" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="19" end1="19" start2="29" end2="31" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="22" end1="25" start2="34" end2="37" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="31" end1="31" start2="43" end2="46" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="36" end1="42" start2="51" end2="89" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="43" end1="46" start2="90" end2="93" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="47" end1="47" start2="94" end2="95" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardNumber.java">
+      <ranges>
+        <range start1="4" end1="4" start2="4" end2="5" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="12" end1="12" start2="13" end2="14" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="14" end1="15" start2="16" end2="19" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="61" end1="61" start2="65" end2="70" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java">
+      <ranges>
+        <range start1="57" end1="58" start2="57" end2="58" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="59" end1="60" start2="59" end2="59" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="70" end1="70" start2="69" end2="70" changelist="3a30ace5-b1f3-4ee4-be07-38c037db791b" />
+        <range start1="96" end1="103" start2="96" end2="108" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="110" end1="122" start2="115" end2="115" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="147" end1="148" start2="140" end2="140" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="154" end1="155" start2="146" end2="146" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="156" end1="158" start2="147" end2="147" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="166" end1="167" start2="155" end2="155" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="178" end1="179" start2="166" end2="166" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="182" end1="185" start2="169" end2="172" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="188" end1="189" start2="175" end2="175" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="190" end1="191" start2="176" end2="181" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="194" end1="195" start2="184" end2="184" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="204" end1="218" start2="193" end2="195" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="259" end1="259" start2="236" end2="238" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+        <range start1="270" end1="270" start2="249" end2="251" changelist="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" />
+      </ranges>
+    </file>
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -153,7 +220,8 @@
       <workItem from="1717853787588" duration="7091000" />
       <workItem from="1718633364964" duration="1243000" />
       <workItem from="1718677406818" duration="23292000" />
-      <workItem from="1718832957405" duration="12842000" />
+      <workItem from="1718832957405" duration="12964000" />
+      <workItem from="1718890154107" duration="8523000" />
     </task>
     <task id="LOCAL-00001" summary="implementar FactoryCard">
       <option name="closed" value="true" />
@@ -180,11 +248,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/unoenum/EISCUnoEnum.java</url>
           <line>78</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java</url>
