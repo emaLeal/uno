@@ -2,18 +2,21 @@ package org.example.eiscuno.model.card;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
 public class CardSpecial implements ICard{
-    private String types;
+    private String type;
     private String url;
     private Image image;
     private ImageView cardImageView;
+    private EISCUnoEnum name;
 
-    public CardSpecial(String url, String type){
+    public CardSpecial(String url, String type, EISCUnoEnum name){
         this.url = url;
-        this.types = type;
+        this.type = type;
         this.image = new Image(String.valueOf(getClass().getResource(url)));
         this.cardImageView = createCardImageView();
+        this.name = name;
     }
 
     @Override
@@ -32,5 +35,18 @@ public class CardSpecial implements ICard{
 
     public Image getImage() {
         return image;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    public EISCUnoEnum getName() {
+        return name;
+    }
+
+    public void setName(EISCUnoEnum name) {
+        this.name = name;
     }
 }

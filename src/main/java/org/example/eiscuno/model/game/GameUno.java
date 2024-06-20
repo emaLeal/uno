@@ -65,7 +65,6 @@ public class GameUno implements IGameUno {
      *
      * @param card The card to be placed on the table.
      */
-    @Override
     public void playCard(ICard card) {
         this.table.addCardOnTheTable(card);
     }

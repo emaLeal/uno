@@ -18,7 +18,7 @@ public class CardNumber implements ICard{
         this.number = number;
         this.image = new Image(String.valueOf(getClass().getResource(url)));
         this.cardImageView = createCardImageView();
-
+        this.type = "Numero";
     }
 
     @Override
@@ -37,5 +37,26 @@ public class CardNumber implements ICard{
 
     public Image getImage() {
         return image;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 }

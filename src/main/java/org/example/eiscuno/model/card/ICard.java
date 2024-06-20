@@ -8,5 +8,6 @@ public interface ICard {
      ImageView createCardImageView();
      ImageView getCard();
      Image getImage();
+     String getType();
 
 }

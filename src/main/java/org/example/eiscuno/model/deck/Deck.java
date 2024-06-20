@@ -3,7 +3,6 @@ package org.example.eiscuno.model.deck;
 import org.example.eiscuno.model.card.FactoryCard;
 import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
-import org.example.eiscuno.model.card.Card;
 
 import java.util.Collections;
 import java.util.Stack;
@@ -32,15 +31,15 @@ public class Deck {
                     cardEnum.name().startsWith("YELLOW_") ||
                     cardEnum.name().startsWith("BLUE_") ||
                     cardEnum.name().startsWith("RED_")) {
-                ICard card = factoryCard.crearCarta(cardEnum.getFilePath(), "Numero",getCardColor(cardEnum.name()), getCardValue(cardEnum.name()),null);
+                ICard card = factoryCard.createCard(cardEnum.getFilePath(), "Numero",getCardColor(cardEnum.name()), getCardValue(cardEnum.name()),null, cardEnum);
                 //Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()));
                 deckOfCards.push(card);
             }else if(cardEnum.name().startsWith("SKIP_") || cardEnum.name().startsWith("RESERVE_") ||cardEnum.name().startsWith("TWO_WILD_DRAW_") ){
-                ICard card = factoryCard.crearCarta(cardEnum.getFilePath(), "Accion",getCardColor(cardEnum.name()), null,cardEnum.name());
+                ICard card = factoryCard.createCard(cardEnum.getFilePath(), "Accion",getCardColor(cardEnum.name()), null,"Accion", cardEnum);
 
                 deckOfCards.push(card);
             }else if(cardEnum.name().equals("FOUR_WILD_DRAW") || cardEnum.name().equals("WILD")){
-                ICard card = factoryCard.crearCarta(cardEnum.getFilePath(), "Especial", null, null,cardEnum.name());
+                ICard card = factoryCard.createCard(cardEnum.getFilePath(), "Especial", null, null,"Especial", cardEnum);
                 deckOfCards.push(card);
             }
         }

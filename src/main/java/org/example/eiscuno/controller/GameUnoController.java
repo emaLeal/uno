@@ -5,16 +5,18 @@ import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import org.example.eiscuno.model.card.Card;
-import org.example.eiscuno.model.card.ICard;
+import org.example.eiscuno.model.card.*;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.machine.ThreadPlayMachine;
 import org.example.eiscuno.model.machine.ThreadSingUNOMachine;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
+import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * Controller class for the Uno game.
@@ -56,6 +58,16 @@ public class GameUnoController {
         threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView);
         threadPlayMachine.start();
         printCardsMachine();
+
+        // empezar una carta
+        String[] opciones = {"GREEN", "YELLOW", "RED", "BLUE"};
+        int cardNumber = new Random().nextInt(10);
+        int pos = new Random().nextInt(4);
+        FactoryCard factoryCard = new FactoryCard();
+        EISCUnoEnum value = EISCUnoEnum.valueOf(opciones[pos] + "_" + String.valueOf(cardNumber));
+        ICard initialCard = factoryCard.createCard(value.getFilePath(), "Numero", opciones[pos], String.valueOf(cardNumber), null , value);
+        gameUno.playCard(initialCard);
+        tableImageView.setImage(initialCard.getImage());
     }
 
     /**
@@ -82,12 +94,14 @@ public class GameUnoController {
             ImageView cardImageView = card.getCard();
 
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
-                // Aqui deberian verificar si pueden en la tabla jugar esa carta
-                gameUno.playCard(card);
-                tableImageView.setImage(card.getImage());
-                humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                threadPlayMachine.setHasPlayerPlayed(true);
-                printCardsHumanPlayer();
+                if (isCardPossible(card)) {
+                    // Aqui deberian verificar si pueden en la tabla jugar esa carta
+                    gameUno.playCard(card);
+                    tableImageView.setImage(card.getImage());
+                    humanPlayer.removeCard(findPosCardsHumanPlayer(card));
+                    threadPlayMachine.setHasPlayerPlayed(true);
+                    printCardsHumanPlayer();
+                }
             });
 
             this.gridPaneCardsPlayer.add(cardImageView, i, 0);
@@ -120,6 +134,93 @@ public class GameUnoController {
             }
         }
         return -1;
+    }
+
+    private boolean isCardPossible(ICard card) {
+        ICard currentGenericCard = table.getCurrentCardOnTheTable();
+        boolean isPossible = false;
+
+        switch (currentGenericCard.getType()) {
+            case "Numero":{
+                CardNumber currentBoardCard = (CardNumber) currentGenericCard;
+                switch (card.getType()) {
+                    case "Numero": {
+                        System.out.println("Numero Numero");
+                        CardNumber currentCard = (CardNumber) card;
+                        if (Objects.equals(currentBoardCard.getColor(), currentCard.getColor()) || Objects.equals(currentBoardCard.getNumber(), currentCard.getNumber()))
+                            isPossible = true;
+                        break;
+                    }
+                    case "Accion": {
+                        System.out.println("Numero Accion");
+                        CardAction currentCard = (CardAction) card;
+                        System.out.println(currentBoardCard.getColor());
+                        System.out.println(currentCard.getColor());
+                        if (currentBoardCard.getColor() == currentCard.getColor()){
+                            System.out.println(currentBoardCard.getColor());
+                            System.out.println(currentCard.getColor());
+                            isPossible = true;
+                        }
+                        break;
+                    }
+                    case "Especial": {
+                        System.out.println("Numero Especial");
+                        CardSpecial currentCard = (CardSpecial) card;
+                        isPossible = true;
+                        break;
+                    }
+                    default:
+                        System.out.println(":D");
+                        break;
+                }
+                break;
+            }
+            case "Accion": {
+
+                CardAction currentBoardCard = (CardAction) currentGenericCard;
+                switch (card.getType()) {
+                    case "Numero":{
+                        System.out.println("Accion Numero");
+                        CardAction currentCard = (CardAction) card;
+                        if (currentBoardCard.getColor() == currentCard.getColor()) isPossible = true;
+                        break;
+                    }
+                    case "Accion": {
+                        System.out.println("Accion Accion");
+                        CardAction currentCard = (CardAction) card;
+                        if (currentBoardCard.getName() == currentCard.getName() || currentBoardCard.getColor() == currentCard.getColor()) isPossible = true;
+                        break;
+                    }
+                    case "Especial": {
+                        System.out.println("Accion Especial");
+                        CardSpecial currentCard = (CardSpecial) card;
+                        isPossible = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            case "Especial":
+                CardSpecial currentBoardCard = (CardSpecial) card;
+                switch (card.getType()) {
+                    case "Numero":
+                        isPossible = true;
+                        break;
+                    case "Accion":
+                        isPossible = true;
+                        break;
+                    case "Especial":
+                        isPossible = true;
+                        break;
+                    default:
+                        System.out.println(":D");
+                        break;
+                }
+            default:
+                System.out.println(":D");
+                break;
+        }
+        return isPossible;
     }
 
     /**
