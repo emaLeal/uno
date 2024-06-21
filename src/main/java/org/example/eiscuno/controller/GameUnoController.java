@@ -2,6 +2,7 @@ package org.example.eiscuno.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -104,10 +105,20 @@ public class GameUnoController {
                 // Aqui deberian verificar si pueden en la tabla jugar esa carta
                 try {
                     if (isCardPossible(card)) {
+                        System.out.println(card.getName().name().startsWith("TWO"));
                         gameUno.playCard(card);
                         tableImageView.setImage(card.getImage());
                         humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                        if (!card.getName().name().startsWith("SKIP")){
+                        if (card.getName().name().startsWith("TWO_WILD_DRAW")) {
+                            gameUno.eatCard(machinePlayer, 2);
+                            threadPlayMachine.printCardsMachine();
+                            System.out.println(":D");
+                        } else if (card.getName().name().startsWith("FOUR")) {
+                            gameUno.eatCard(machinePlayer, 4);
+                            threadPlayMachine.printCardsMachine();
+                        }else if (card.getName().name().startsWith("WILD")) {
+
+                        } else if (!card.getName().name().startsWith("SKIP")){
                             threadPlayMachine.setHasPlayerPlayed(true);
                         }
                         printCardsHumanPlayer();
@@ -253,6 +264,27 @@ public class GameUnoController {
      */
     @FXML
     void chooseColor(ActionEvent event){
+        System.out.println(event);
+        Button colorButton = (Button) event.getSource();
+        ICard currentCardData = table.getCurrentCardOnTheTable();
+        switch (colorButton.getText()) {
+            case "Rojo":
+                currentCardData.setColor("RED");
+                break;
+            case "Azul":
+                currentCardData.setColor("BLUE");
+                break;
+            case "Verde":
+                currentCardData.setColor("GREEN");
+                break;
+            case "Amarillo":
+                currentCardData.setColor("YELLOW");
+                break;
+            default:
+                System.out.println(":D");
+                break;
+        }
+
         idChooseColor.setVisible(false);
     }
 

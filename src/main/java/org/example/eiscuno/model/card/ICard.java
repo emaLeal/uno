@@ -12,6 +12,7 @@ public interface ICard {
      String getType();
      EISCUnoEnum getName();
      String getColor();
+     void setColor(String color);
      String getNumber();
 
 }

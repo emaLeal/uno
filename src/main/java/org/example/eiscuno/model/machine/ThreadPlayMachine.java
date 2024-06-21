@@ -63,7 +63,11 @@ public class ThreadPlayMachine extends Thread {
                     e.printStackTrace();
                 }
                 // Aqui iria la logica de colocar la carta
-                putCardOnTheTable();
+                try {
+                    putCardOnTheTable();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 //printCardsMachine();
                 Platform.runLater(this::printCardsMachine);
 
@@ -75,7 +79,7 @@ public class ThreadPlayMachine extends Thread {
      * Tries to place a card on the table from the machine player's hand.
      * If no valid card is found, the machine player draws a card and tries again.
      */
-    private void putCardOnTheTable() {
+    private void putCardOnTheTable() throws InterruptedException {
         int index;
         boolean found = false;
         ICard currentCardOnBoard = table.getCurrentCardOnTheTable();
@@ -96,6 +100,9 @@ public class ThreadPlayMachine extends Thread {
         }
         if (!found) {
             gameUno.eatCard(machinePlayer,1);
+
+            Thread.sleep(1000);
+            Platform.runLater(this::printCardsMachine);
             putCardOnTheTable();
         }
     }
@@ -103,7 +110,7 @@ public class ThreadPlayMachine extends Thread {
     /**
      * Updates the visual representation of the machine player's cards.
      */
-    private void printCardsMachine () {
+    public void printCardsMachine () {
         gridPaneCardsMachine.getChildren().clear();
         ArrayList<ICard> currentVisibleMachine = machinePlayer.getCardsPlayer();
 
