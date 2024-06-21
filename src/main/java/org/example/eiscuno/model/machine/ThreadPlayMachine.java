@@ -13,6 +13,8 @@ import org.example.eiscuno.model.table.Table;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
+
 /**
  * A thread that handles the machine player's turn in the game.
  * This thread checks if the human player has played and then performs
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class ThreadPlayMachine extends Thread {
     private Table table;
     private Player machinePlayer;
+    private Player humanPlayer;
     private ImageView tableImageView;
     private GameUno gameUno;
     private GridPane gridPaneCardsMachine;
@@ -39,10 +42,11 @@ public class ThreadPlayMachine extends Thread {
      * @param labelTable the label showing the total number of cards in the deck
      * @param labelMachine the label showing the number of cards the machine has
      */
-    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine) {
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.table = table;
         this.machinePlayer = machinePlayer;
+        this.humanPlayer = humanPlayer;
         this.tableImageView = tableImageView;
         this.hasPlayerPlayed = false;
         this.gameUno = gameUno;
@@ -71,7 +75,6 @@ public class ThreadPlayMachine extends Thread {
                 //printCardsMachine();
                 Platform.runLater(this::printCardsMachine);
 
-                hasPlayerPlayed = false;
             }
         }
     }
@@ -87,10 +90,28 @@ public class ThreadPlayMachine extends Thread {
             String typeCurrentBoardCard = currentCardOnBoard.getName().name().split("_")[0];
             String typeCurrentCard = card.getName().name().split("_")[0];
             if (Objects.equals(currentCardOnBoard.getNumber(), card.getNumber()) ||Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentCardOnBoard.getColor(), card.getColor()) || Objects.equals(card.getType(), "Especial")) {
-
                 index = machinePlayer.getCardsPlayer().indexOf(card);
                 machinePlayer.removeCard(index);
                 Platform.runLater(this::updateLabel);
+               if (card.getName().name().startsWith("TWO")){
+                    gameUno.eatCard(humanPlayer, 2);
+               } else if (card.getName().name().startsWith("FOUR")) {
+                    gameUno.eatCard(humanPlayer, 4);
+                   String[] opciones = {"RED", "BLUE", "YELLOW", "GREEN"};
+                   int randomOption = new Random().nextInt(4);
+                   currentCardOnBoard.setColor(opciones[randomOption]);
+                   System.out.println("NUEVO COLOR " + opciones[randomOption]);
+               } else if (card.getName().name().startsWith("RESERVE") || card.getName().name().startsWith("SKIP")) {
+                   hasPlayerPlayed = true;
+               } else if (card.getName().name().startsWith("WILD")) {
+                    String[] opciones = {"RED", "BLUE", "YELLOW", "GREEN"};
+                   int randomOption = new Random().nextInt(4);
+                   currentCardOnBoard.setColor(opciones[randomOption]);
+                   System.out.println("NUEVO COLOR " + opciones[randomOption]);
+                   hasPlayerPlayed = false;
+               } else {
+                   hasPlayerPlayed = false;
+               }
                 table.addCardOnTheTable(card);
                 tableImageView.setImage(card.getImage());
                 found = true;

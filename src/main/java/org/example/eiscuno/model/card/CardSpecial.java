@@ -6,6 +6,7 @@ import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
 public class CardSpecial implements ICard{
     private String type;
+    private String color;
     private String url;
     private Image image;
     private ImageView cardImageView;
@@ -17,6 +18,7 @@ public class CardSpecial implements ICard{
         this.image = new Image(String.valueOf(getClass().getResource(url)));
         this.cardImageView = createCardImageView();
         this.name = name;
+        this.color = color;
     }
 
     @Override
@@ -43,10 +45,10 @@ public class CardSpecial implements ICard{
     }
 
     public String getColor() {
-        return null;
+        return color;
     }
     public void setColor(String color) {
-        System.out.println(color);
+        this.color = color;
     }
     public String getNumber(){return null;}
     public EISCUnoEnum getName() {

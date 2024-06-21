@@ -64,7 +64,7 @@ public class GameUnoController {
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this.gridPaneCardsMachine,this.gameUno, this.labelTable, this.labelMachine);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine,this.gameUno, this.labelTable, this.labelMachine);
         threadPlayMachine.start();
 
         String[] opciones = {"GREEN", "YELLOW", "RED", "BLUE"};
@@ -93,44 +93,45 @@ public class GameUnoController {
     /**
      * Prints the human player's cards on the grid pane.
      */
-    private void printCardsHumanPlayer() {
-        this.gridPaneCardsPlayer.getChildren().clear();
-        ICard[] currentVisibleCardsHumanPlayer = this.gameUno.getCurrentVisibleCardsHumanPlayer(this.posInitCardToShow);
+        private void printCardsHumanPlayer() {
+            this.gridPaneCardsPlayer.getChildren().clear();
+            ICard[] currentVisibleCardsHumanPlayer = this.gameUno.getCurrentVisibleCardsHumanPlayer(this.posInitCardToShow);
 
-        for (int i = 0; i < currentVisibleCardsHumanPlayer.length; i++) {
-            ICard card = currentVisibleCardsHumanPlayer[i];
-            ImageView cardImageView = card.getCard();
+            for (int i = 0; i < currentVisibleCardsHumanPlayer.length; i++) {
+                ICard card = currentVisibleCardsHumanPlayer[i];
+                ImageView cardImageView = card.getCard();
 
-            cardImageView.setOnMouseClicked((MouseEvent event) -> {
-                // Aqui deberian verificar si pueden en la tabla jugar esa carta
-                try {
-                    if (isCardPossible(card)) {
-                        System.out.println(card.getName().name().startsWith("TWO"));
-                        gameUno.playCard(card);
-                        tableImageView.setImage(card.getImage());
-                        humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                        if (card.getName().name().startsWith("TWO_WILD_DRAW")) {
-                            gameUno.eatCard(machinePlayer, 2);
-                            threadPlayMachine.printCardsMachine();
-                            System.out.println(":D");
-                        } else if (card.getName().name().startsWith("FOUR")) {
-                            gameUno.eatCard(machinePlayer, 4);
-                            threadPlayMachine.printCardsMachine();
-                        }else if (card.getName().name().startsWith("WILD")) {
+                cardImageView.setOnMouseClicked((MouseEvent event) -> {
+                    // Aqui deberian verificar si pueden en la tabla jugar esa carta
+                    try {
+                        if (isCardPossible(card)) {
+                            System.out.println(card.getName().name().startsWith("TWO"));
+                            gameUno.playCard(card);
+                            tableImageView.setImage(card.getImage());
+                            humanPlayer.removeCard(findPosCardsHumanPlayer(card));
+                            if (card.getName().name().startsWith("TWO_WILD_DRAW")) {
+                                gameUno.eatCard(machinePlayer, 2);
+                                threadPlayMachine.printCardsMachine();
+                                System.out.println(":D");
+                            } else if (card.getName().name().startsWith("FOUR")) {
+                                gameUno.eatCard(machinePlayer, 4);
+                                threadPlayMachine.printCardsMachine();
 
-                        } else if (!card.getName().name().startsWith("SKIP")){
-                            threadPlayMachine.setHasPlayerPlayed(true);
+                            } else if(card.getName().name().startsWith("WILD")){
+                                System.out.println("Espera de eleccion de color");
+                            }else if (!card.getName().name().startsWith("SKIP")){
+                                threadPlayMachine.setHasPlayerPlayed(true);
+                            }
+                            printCardsHumanPlayer();
+                            updateLabel();
                         }
-                        printCardsHumanPlayer();
-                        updateLabel();
+                    }catch (Error e) {
+                        System.out.println(e);
                     }
-                }catch (Error e) {
-                    System.out.println(e);
-                }
-            });
+                });
 
-            this.gridPaneCardsPlayer.add(cardImageView, i, 0);
-        }
+                this.gridPaneCardsPlayer.add(cardImageView, i, 0);
+            }
     }
 
 
@@ -160,37 +161,25 @@ public class GameUnoController {
         ICard currentGenericCard = table.getCurrentCardOnTheTable();
         boolean isPossible = false;
 
-        System.out.println(card.getType());
         switch (card.getType()) {
             case "Numero":{
-
-                if (Objects.equals(currentGenericCard.getColor(), card.getColor()) || Objects.equals(currentGenericCard.getNumber(), card.getNumber()) || Objects.equals(currentGenericCard.getType(), "Especial"))
+                if (Objects.equals(currentGenericCard.getColor(), card.getColor()) || Objects.equals(currentGenericCard.getNumber(), card.getNumber()))
                     isPossible = true;
                 break;
-
             }
             case "Accion": {
                 String typeCurrentBoardCard = currentGenericCard.getName().name().split("_")[0];
                 String typeCurrentCard = card.getName().name().split("_")[0];
 
-                if (Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentGenericCard.getColor(), card.getColor()) || Objects.equals(currentGenericCard.getType(), "Especial"))
-                    {
-                        if(Objects.equals(typeCurrentCard, "TWO")) {
-                            gameUno.eatCard(machinePlayer, 2);
-                    }
+                if (Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentGenericCard.getColor(), card.getColor()))
                     isPossible = true;
-                }
                 break;
             }
             case "Especial":
                 String typeCurrentCard = card.getName().name().split("_")[0];
                 System.out.println(typeCurrentCard);
-                if(Objects.equals(typeCurrentCard, "FOUR")){
-                    gameUno.eatCard(machinePlayer, 4);
+                if(Objects.equals(typeCurrentCard, "FOUR") || Objects.equals(typeCurrentCard, "WILD"))
                     idChooseColor.setVisible(true);
-                }else if(Objects.equals(typeCurrentCard, "WILD")){
-                    idChooseColor.setVisible(true);
-                }
                 isPossible = true;
             default:
                 System.out.println(":D");
@@ -284,7 +273,8 @@ public class GameUnoController {
                 System.out.println(":D");
                 break;
         }
-
+        if (currentCardData.getName().name().startsWith("WILD"))
+            threadPlayMachine.setHasPlayerPlayed(true);
         idChooseColor.setVisible(false);
     }
 
