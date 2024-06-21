@@ -13,7 +13,11 @@ import org.example.eiscuno.model.table.Table;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
+/**
+ * A thread that handles the machine player's turn in the game.
+ * This thread checks if the human player has played and then performs
+ * the machine player's actions.
+ */
 public class ThreadPlayMachine extends Thread {
     private Table table;
     private Player machinePlayer;
@@ -24,7 +28,18 @@ public class ThreadPlayMachine extends Thread {
     private Label labelTable;
     private Label labelMachine;
 
-    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno,Label labelTable, Label labelMachine) {
+    /**
+     * Initializes the thread with the necessary game components.
+     *
+     * @param table the game table
+     * @param machinePlayer the machine player
+     * @param tableImageView the image view for the table's current card
+     * @param gridPaneCardsMachine the grid pane displaying the machine's cards
+     * @param gameUno the game logic controller
+     * @param labelTable the label showing the total number of cards in the deck
+     * @param labelMachine the label showing the number of cards the machine has
+     */
+    public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine) {
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.table = table;
         this.machinePlayer = machinePlayer;
@@ -35,7 +50,10 @@ public class ThreadPlayMachine extends Thread {
         this.labelTable = labelTable;
         printCardsMachine();
     }
-
+    /**
+     * The main logic loop for the machine player's turn.
+     * Continuously checks if the human player has played and then makes a move.
+     */
     public void run() {
         while (true) {
             if (hasPlayerPlayed) {
@@ -53,7 +71,10 @@ public class ThreadPlayMachine extends Thread {
             }
         }
     }
-
+    /**
+     * Tries to place a card on the table from the machine player's hand.
+     * If no valid card is found, the machine player draws a card and tries again.
+     */
     private void putCardOnTheTable() {
         int index;
         boolean found = false;
@@ -79,7 +100,9 @@ public class ThreadPlayMachine extends Thread {
         }
     }
 
-
+    /**
+     * Updates the visual representation of the machine player's cards.
+     */
     private void printCardsMachine () {
         gridPaneCardsMachine.getChildren().clear();
         ArrayList<ICard> currentVisibleMachine = machinePlayer.getCardsPlayer();
@@ -95,9 +118,19 @@ public class ThreadPlayMachine extends Thread {
         }
     }
 
+    /**
+     * Sets the flag indicating if the human player has played.
+     *
+     * @param hasPlayerPlayed true if the human player has played, false otherwise
+     */
+
     public void setHasPlayerPlayed ( boolean hasPlayerPlayed){
         this.hasPlayerPlayed = hasPlayerPlayed;
     }
+    /**
+     * Updates the labels showing the total number of cards in the deck
+     * and the number of cards the machine player has.
+     */
 
     private void updateLabel(){
         labelTable.setText("Total de cartas : " + gameUno.sizeDeck());

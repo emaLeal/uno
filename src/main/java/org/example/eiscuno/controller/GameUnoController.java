@@ -138,6 +138,13 @@ public class GameUnoController {
         return -1;
     }
 
+    /**
+     * Determines if a specific card can be played based on the current game rules.
+     *
+     * @param card the card to check for playability
+     * @return true if the card can be played, false otherwise
+     *
+     */
     private boolean isCardPossible(ICard card) {
         ICard currentGenericCard = table.getCurrentCardOnTheTable();
         boolean isPossible = false;
@@ -219,6 +226,10 @@ public class GameUnoController {
         printCardsHumanPlayer();
     }
 
+    /**
+     * Updates the labels to display the current number of cards in the deck
+     * and the number of cards the machine player has.
+     */
     void updateLabel(){
         labelTable.setText("Total de cartas : " + deck.GetCards().size());
         labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
@@ -233,6 +244,13 @@ public class GameUnoController {
     void onHandleUno(ActionEvent event) {
         // Implement logic to handle Uno event here
     }
+
+    /**
+     * Handles the action of choosing a color in the game.
+     * This method is called when the user interacts with the color selection.
+     *
+     * @param event the ActionEvent triggered by the UI interaction, typically a button click
+     */
     @FXML
     void chooseColor(ActionEvent event){
         idChooseColor.setVisible(false);
