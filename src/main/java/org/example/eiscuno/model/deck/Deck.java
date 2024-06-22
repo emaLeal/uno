@@ -4,6 +4,7 @@ import org.example.eiscuno.model.card.FactoryCard;
 import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -112,5 +113,9 @@ public class Deck {
      */
     public boolean isEmpty() {
         return deckOfCards.isEmpty();
+    }
+
+    public void updateDeck(ArrayList<ICard> carts){
+        deckOfCards.addAll(carts);
     }
 }

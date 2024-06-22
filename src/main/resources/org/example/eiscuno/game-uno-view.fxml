@@ -53,7 +53,7 @@
                   <Button mnemonicParsing="false" onAction="#chooseColor" prefHeight="25.0" prefWidth="62.0" text="Azul" />
                </children>
             </VBox>
-            <ImageView fx:id="idImagenMessage" fitHeight="194.0" fitWidth="277.0" layoutX="5.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="idImagenMessage" fitHeight="194.0" fitWidth="277.0" layoutX="5.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" visible="false" />
          </children>
       </Pane>
    </center>

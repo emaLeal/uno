@@ -6,6 +6,8 @@ import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 
+import java.util.ArrayList;
+
 /**
  * Represents a game of Uno.
  * This class manages the game logic and interactions between players, deck, and the table.
@@ -56,6 +58,13 @@ public class GameUno implements IGameUno {
     @Override
     public void eatCard(Player player, int numberOfCards) {
         for (int i = 0; i < numberOfCards; i++) {
+            System.out.println("comiendo");
+            if (deck.isEmpty()){
+                System.out.println("actualizar dexck");
+                //System.out.println(table.getCurrentCardsOnTheTable().size());
+
+                deck.updateDeck(table.getCurrentCardsOnTheTable());
+            }
             player.addCard(this.deck.takeCard());
         }
     }

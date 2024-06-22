@@ -109,7 +109,7 @@ public class GameUnoController {
                 cardImageView.setOnMouseClicked((MouseEvent event) -> {
                     // Aqui deberian verificar si pueden en la tabla jugar esa carta
                     try {
-                        if (isCardPossible(card)) {
+                        if (true) {
                             //System.out.println(card.getName().name().startsWith("TWO"));
                             gameUno.playCard(card);
                             tableImageView.setImage(card.getImage());
@@ -313,12 +313,14 @@ public class GameUnoController {
              image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/images/ganaste.png")));
             imageView.setImage(image);
             idImagenMessage.setImage(image);
+            idImagenMessage.setVisible(true);
             tableImageView.setImage(null);
             return true;
         } else if (machinePlayer.getCardsPlayer().isEmpty()) {
              image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/images/perdiste.png")));
              imageView.setImage(image);
             idImagenMessage.setImage(image);
+            idImagenMessage.setVisible(true);
             tableImageView.setImage(null);
             return true;
         }

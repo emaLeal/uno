@@ -39,4 +39,17 @@ public class Table {
         }
         return this.cardsTable.get(this.cardsTable.size()-1);
     }
+
+    public ArrayList<ICard>  getCurrentCardsOnTheTable() throws IndexOutOfBoundsException {
+        if (cardsTable.isEmpty() || cardsTable.size() == 1) {
+            throw new IndexOutOfBoundsException("There are no cards on the table.");
+
+        }
+
+        ArrayList<ICard> cardsToReturn = new ArrayList<>(cardsTable.subList(0, cardsTable.size() - 1));
+        ICard card = this.cardsTable.get(this.cardsTable.size()-1);
+        this.cardsTable.clear();
+        addCardOnTheTable(card);
+        return cardsToReturn;
+    }
 }
