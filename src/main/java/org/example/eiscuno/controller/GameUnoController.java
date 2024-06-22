@@ -109,7 +109,7 @@ public class GameUnoController {
                 cardImageView.setOnMouseClicked((MouseEvent event) -> {
                     // Aqui deberian verificar si pueden en la tabla jugar esa carta
                     try {
-                        if (true) {
+                        if (isCardPossible(card)) {
                             //System.out.println(card.getName().name().startsWith("TWO"));
                             gameUno.playCard(card);
                             tableImageView.setImage(card.getImage());
