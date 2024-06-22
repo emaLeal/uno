@@ -49,6 +49,7 @@ public class CardSpecial implements ICard{
     }
     public void setColor(String color) {
         this.color = color;
+        System.out.println("Cambie color a " + color);
     }
     public String getNumber(){return null;}
     public EISCUnoEnum getName() {

@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import org.example.eiscuno.model.card.Card;
+import org.example.eiscuno.model.card.CardSpecial;
 import org.example.eiscuno.model.card.ICard;
 import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.player.Player;
@@ -92,27 +92,36 @@ public class ThreadPlayMachine extends Thread {
         for (ICard card : machinePlayer.getCardsPlayer()) {
             String typeCurrentBoardCard = currentCardOnBoard.getName().name().split("_")[0];
             String typeCurrentCard = card.getName().name().split("_")[0];
-            if (Objects.equals(currentCardOnBoard.getNumber(), card.getNumber()) ||Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentCardOnBoard.getColor(), card.getColor()) || Objects.equals(card.getType(), "Especial")) {
+            System.out.println(currentCardOnBoard.getNumber() + " " + card.getNumber());
+            System.out.println(typeCurrentBoardCard + " " + typeCurrentCard);
+            System.out.println(currentCardOnBoard.getColor() + " " + card.getColor());
+            System.out.println(currentCardOnBoard.getType());
+            if ((Objects.equals(card.getType(), "Numero") && Objects.equals(currentCardOnBoard.getNumber(), card.getNumber())) ||Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentCardOnBoard.getColor(), card.getColor()) || Objects.equals(card.getType(), "Especial")) {
                 index = machinePlayer.getCardsPlayer().indexOf(card);
                 machinePlayer.removeCard(index);
                 Platform.runLater(this::updateLabel);
                if (card.getName().name().startsWith("TWO")){
                     gameUno.eatCard(humanPlayer, 2);
                } else if (card.getName().name().startsWith("FOUR")) {
-                    gameUno.eatCard(humanPlayer, 4);
+                   System.out.println("Entrando a +4");
+                   CardSpecial currentCardOnBoardSpecial = (CardSpecial) card;
+                   gameUno.eatCard(humanPlayer, 4);
                    String[] opciones = {"RED", "BLUE", "YELLOW", "GREEN"};
                    int randomOption = new Random().nextInt(4);
-                   currentCardOnBoard.setColor(opciones[randomOption]);
+                   currentCardOnBoardSpecial.setColor(opciones[randomOption]);
                    System.out.println("NUEVO COLOR " + opciones[randomOption]);
                } else if (card.getName().name().startsWith("RESERVE") || card.getName().name().startsWith("SKIP")) {
                    hasPlayerPlayed = true;
                } else if (card.getName().name().startsWith("WILD")) {
+                   System.out.println("Entrando a cambio de color");
+                   CardSpecial currentCardOnBoardSpecial = (CardSpecial) card;
                     String[] opciones = {"RED", "BLUE", "YELLOW", "GREEN"};
                    int randomOption = new Random().nextInt(4);
-                   currentCardOnBoard.setColor(opciones[randomOption]);
+                   currentCardOnBoardSpecial.setColor(opciones[randomOption]);
                    System.out.println("NUEVO COLOR " + opciones[randomOption]);
                    hasPlayerPlayed = false;
                } else {
+                   System.out.println("Por defecto");
                    hasPlayerPlayed = false;
                }
                 table.addCardOnTheTable(card);
@@ -140,17 +149,21 @@ public class ThreadPlayMachine extends Thread {
         ArrayList<ICard> currentVisibleMachine = machinePlayer.getCardsPlayer();
         ImageView imagenCard;
         for (int i = 0; i < currentVisibleMachine.size(); i++) {
-            if(idShowCarts.isSelected()){
-                ICard card = currentVisibleMachine.get(i);
-                imagenCard = card.getCard();
-            }else{
-                imagenCard = GetImagenCart();
+            try {
+                if(idShowCarts.isSelected()){
+                    ICard card = currentVisibleMachine.get(i);
+                    imagenCard = card.getCard();
+                }else{
+                    imagenCard = GetImagenCart();
 
+                }
+                ImageView cardImageView = imagenCard;
+
+
+                gridPaneCardsMachine.add(cardImageView, i, 0);
+            } catch (Error e) {
+                System.out.println("Error: " + e);
             }
-            ImageView cardImageView = imagenCard;
-
-
-            gridPaneCardsMachine.add(cardImageView, i, 0);
         }
     }
 
@@ -174,12 +187,17 @@ public class ThreadPlayMachine extends Thread {
     }
 
     private ImageView GetImagenCart(){
-        Image image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/cards-uno/card_uno.png")));
-        ImageView card = new ImageView(image);
-        card.setY(16);
-        card.setFitHeight(90);
-        card.setFitWidth(70);
-        return card;
+        try {
+            Image image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/cards-uno/card_uno.png")));
+            ImageView card = new ImageView(image);
+            card.setY(16);
+            card.setFitHeight(90);
+            card.setFitWidth(70);
+            return card;
+        } catch (Error e) {
+            System.out.println("Error: " + e);
+            return null;
+        }
     }
 }
 
