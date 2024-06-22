@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="update deck">
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/game/GameUnoTest.java" afterDir="false" />
+    <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="funcionalidad de ganar o perder">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/CardSpecial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/table/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/table/Table.java" afterDir="false" />
     </list>
     <list id="3a30ace5-b1f3-4ee4-be07-38c037db791b" name="Changes by jaque" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +27,6 @@
         <option value="CSS File" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -72,18 +74,10 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.HelloApplication.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.GameTest.prueba.executor": "Run",
-    "JUnit.GameUnoTest.ComerDosCartsMaquina.executor": "Run",
-    "JUnit.GameUnoTest.addCardOnTheTableTest.executor": "Run",
-    "JUnit.GameUnoTest.executor": "Run",
-    "JUnit.GameUnoTest.probarcolor.executor": "Run",
-    "JUnit.GameUnoTest.prueba.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "cris",
+    "git-widget-placeholder": "emanuel",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/jaque/IdeaProjects/uno/src/main/resources/org/example/eiscuno/images",
     "list.type.of.created.stylesheet": "CSS",
@@ -92,7 +86,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.archetype.catalogs",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -105,107 +99,31 @@
       <recent name="C:\Users\fsvc1\Coding\eisc-uno\src\main\resources\org\example\eiscuno\images" />
       <recent name="C:\Users\fsvc1\Coding\eisc-uno\src" />
     </key>
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="org.example.eiscuno.model.game" />
-    </key>
   </component>
-  <component name="RunManager" selected="JUnit.GameUnoTest">
-    <configuration name="GameUnoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.Main" />
       <module name="eisc-uno" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
+          <option name="PATTERN" value="org.example.eiscuno.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameUnoTest.ComerDosCartsMaquina" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="eisc-uno" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="METHOD_NAME" value="ComerDosCartsMaquina" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameUnoTest.addCardOnTheTableTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="eisc-uno" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="METHOD_NAME" value="addCardOnTheTableTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameUnoTest.probarcolor" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="eisc-uno" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="METHOD_NAME" value="probarcolor" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameUnoTest.prueba" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="eisc-uno" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.eiscuno.model.game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.eiscuno.model.game" />
-      <option name="MAIN_CLASS_NAME" value="org.example.eiscuno.model.game.GameUnoTest" />
-      <option name="METHOD_NAME" value="prueba" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.GameUnoTest" />
-        <item itemvalue="JUnit.GameUnoTest.ComerDosCartsMaquina" />
-        <item itemvalue="JUnit.GameUnoTest.prueba" />
-        <item itemvalue="JUnit.GameUnoTest.probarcolor" />
-        <item itemvalue="JUnit.GameUnoTest.addCardOnTheTableTest" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+        <option value="jdk-19.0.2-corretto-19.0.2-4caba194b151-48ba4555" />
       </set>
     </attachedChunks>
   </component>
@@ -241,7 +159,6 @@
       <workItem from="1718677406818" duration="23292000" />
       <workItem from="1718832957405" duration="12964000" />
       <workItem from="1718890154107" duration="8523000" />
-      <workItem from="1719090950548" duration="3029000" />
     </task>
     <task id="LOCAL-00001" summary="implementar FactoryCard">
       <option name="closed" value="true" />
@@ -259,23 +176,7 @@
       <option name="project" value="LOCAL" />
       <updated>1719060165581</updated>
     </task>
-    <task id="LOCAL-00003" summary="update deck">
-      <option name="closed" value="true" />
-      <created>1719065972500</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1719065972501</updated>
-    </task>
-    <task id="LOCAL-00004" summary="update deck">
-      <option name="closed" value="true" />
-      <created>1719066027924</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1719066027924</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,8 +185,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="implementar FactoryCard" />
     <MESSAGE value="funcionalidad de ganar o perder" />
-    <MESSAGE value="update deck" />
-    <option name="LAST_COMMIT_MESSAGE" value="update deck" />
+    <option name="LAST_COMMIT_MESSAGE" value="funcionalidad de ganar o perder" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -296,29 +196,9 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java</url>
-          <line>116</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java</url>
-          <line>184</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/game/GameUno.java</url>
-          <line>122</line>
+          <line>124</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/example/eiscuno/model/game/GameUnoTest.java</url>
-          <line>97</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/player/Player.java</url>
-          <line>49</line>
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java</url>
@@ -329,10 +209,6 @@
           </properties>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.IllegalAccessError" package="java.lang" />
-          <option name="timeStamp" value="18" />
-        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

@@ -46,10 +46,14 @@ public class Table {
 
         }
 
-        ArrayList<ICard> cardsToReturn = new ArrayList<>(cardsTable.subList(0, cardsTable.size() - 1));
-        ICard card = this.cardsTable.get(this.cardsTable.size()-1);
-        this.cardsTable.clear();
-        addCardOnTheTable(card);
-        return cardsToReturn;
+        try {
+            ArrayList<ICard> cardsToReturn = new ArrayList<>(cardsTable.subList(0, cardsTable.size() - 1));
+            ICard card = this.cardsTable.get(this.cardsTable.size()-1);
+            this.cardsTable.clear();
+            addCardOnTheTable(card);
+            return cardsToReturn;
+        } catch (Error e) {
+            return null;
+        }
     }
 }

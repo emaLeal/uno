@@ -76,17 +76,19 @@ public class Deck {
     }
 
     private String getCardColor(String name){
-        if(name.contains("GREEN")){
-            return "GREEN";
-        } else if(name.contains("YELLOW")){
-            return "YELLOW";
-        } else if(name.contains("BLUE")){
-            return "BLUE";
-        } else if(name.contains(    "RED")){
-            return "RED";
-        } else {
-            return null;
-        }
+        String color = "";
+        if(name.contains("GREEN"))
+            color = "GREEN";
+        else if(name.contains("YELLOW"))
+            color = "YELLOW";
+        else if(name.contains("BLUE"))
+            color = "BLUE";
+        else if(name.contains("RED"))
+            color = "RED";
+        else
+            color = null;
+
+        return color;
     }
 
     /**
