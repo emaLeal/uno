@@ -58,10 +58,7 @@ public class GameUno implements IGameUno {
     @Override
     public void eatCard(Player player, int numberOfCards) {
         for (int i = 0; i < numberOfCards; i++) {
-            System.out.println("comiendo");
             if (deck.isEmpty()){
-                System.out.println("actualizar dexck");
-                //System.out.println(table.getCurrentCardsOnTheTable().size());
 
                 deck.updateDeck(table.getCurrentCardsOnTheTable());
             }
