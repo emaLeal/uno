@@ -116,7 +116,7 @@ public class GameUnoController {
                             gameUno.playCard(card);
                             tableImageView.setImage(card.getImage());
                             humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                            if(!validateWinner()){
+                            if(!WinnerValidate()){
                                 if (card.getName().name().startsWith("TWO_WILD_DRAW")) {
                                     gameUno.eatCard(machinePlayer, 2);
                                     threadPlayMachine.printCardsMachine();
@@ -132,7 +132,7 @@ public class GameUnoController {
                                     TimerTask task = new TimerTask() {
                                         public void run() {
                                             Platform.runLater(()->printCardsHumanPlayer());
-                                            if (!validateWinner()){
+                                            if (!WinnerValidate()){
                                                 gridPaneCardsPlayer.setDisable(false);
                                             }
                                         }
@@ -318,7 +318,7 @@ public class GameUnoController {
         threadPlayMachine.printCardsMachine();
     }
     
-    private boolean validateWinner(){
+    private boolean WinnerValidate(){
         ImageView imageView = new ImageView();
         Image image;
         imageView.setY(16);
