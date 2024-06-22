@@ -1,9 +1,12 @@
 package org.example.eiscuno.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -17,9 +20,7 @@ import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Controller class for the Uno game.
@@ -35,12 +36,16 @@ public class GameUnoController {
     @FXML
     private ImageView tableImageView;
     @FXML
+    private ImageView idImagenMessage;
+    @FXML
     private Label labelMachine;
 
     @FXML
     private Label labelTable;
     @FXML
     private VBox idChooseColor;
+    @FXML
+    private CheckBox idShowCarts;
 
     private Player humanPlayer;
     private Player machinePlayer;
@@ -64,7 +69,7 @@ public class GameUnoController {
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine,this.gameUno, this.labelTable, this.labelMachine);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine,this.gameUno, this.labelTable, this.labelMachine, this.idShowCarts);
         threadPlayMachine.start();
 
         String[] opciones = {"GREEN", "YELLOW", "RED", "BLUE"};
@@ -105,22 +110,37 @@ public class GameUnoController {
                     // Aqui deberian verificar si pueden en la tabla jugar esa carta
                     try {
                         if (isCardPossible(card)) {
-                            System.out.println(card.getName().name().startsWith("TWO"));
+                            //System.out.println(card.getName().name().startsWith("TWO"));
                             gameUno.playCard(card);
                             tableImageView.setImage(card.getImage());
                             humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                            if (card.getName().name().startsWith("TWO_WILD_DRAW")) {
-                                gameUno.eatCard(machinePlayer, 2);
-                                threadPlayMachine.printCardsMachine();
-                                System.out.println(":D");
-                            } else if (card.getName().name().startsWith("FOUR")) {
-                                gameUno.eatCard(machinePlayer, 4);
-                                threadPlayMachine.printCardsMachine();
+                            if(!validateWinner()){
+                                if (card.getName().name().startsWith("TWO_WILD_DRAW")) {
+                                    gameUno.eatCard(machinePlayer, 2);
+                                    threadPlayMachine.printCardsMachine();
+                                } else if (card.getName().name().startsWith("FOUR")) {
+                                    gameUno.eatCard(machinePlayer, 4);
+                                    threadPlayMachine.printCardsMachine();
 
-                            } else if(card.getName().name().startsWith("WILD")){
-                                System.out.println("Espera de eleccion de color");
-                            }else if (!card.getName().name().startsWith("SKIP")){
-                                threadPlayMachine.setHasPlayerPlayed(true);
+                                } else if(card.getName().name().startsWith("WILD")){
+                                    System.out.println("Espera de eleccion de color");
+                                }else if (!card.getName().name().startsWith("SKIP")){
+                                    gridPaneCardsPlayer.setDisable(true);
+                                    threadPlayMachine.setHasPlayerPlayed(true);
+                                    //ejecuta despues que la maquina lanze
+                                    TimerTask task = new TimerTask() {
+                                        public void run() {
+                                            Platform.runLater(()->printCardsHumanPlayer());
+                                            if (!validateWinner()){
+                                                gridPaneCardsPlayer.setDisable(false);
+                                            }
+                                        }
+                                    };
+                                    Timer timer = new Timer("Timer");
+                                    long delay = 3000L;
+                                    timer.schedule(task, delay);
+                                }
+
                             }
                             printCardsHumanPlayer();
                             updateLabel();
@@ -159,6 +179,7 @@ public class GameUnoController {
      */
     private boolean isCardPossible(ICard card) {
         ICard currentGenericCard = table.getCurrentCardOnTheTable();
+
         boolean isPossible = false;
 
         switch (card.getType()) {
@@ -253,7 +274,6 @@ public class GameUnoController {
      */
     @FXML
     void chooseColor(ActionEvent event){
-        System.out.println(event);
         Button colorButton = (Button) event.getSource();
         ICard currentCardData = table.getCurrentCardOnTheTable();
         switch (colorButton.getText()) {
@@ -278,5 +298,31 @@ public class GameUnoController {
         idChooseColor.setVisible(false);
     }
 
+    @FXML
+    private void showCarts(){
+        threadPlayMachine.printCardsMachine();
+    }
+    
+    private boolean validateWinner(){
+        ImageView imageView = new ImageView();
+        Image image;
+        imageView.setY(16);
+        imageView.setFitHeight(90);
+        imageView.setFitWidth(70);
+        if(humanPlayer.getCardsPlayer().isEmpty()){
+             image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/images/ganaste.png")));
+            imageView.setImage(image);
+            idImagenMessage.setImage(image);
+            tableImageView.setImage(null);
+            return true;
+        } else if (machinePlayer.getCardsPlayer().isEmpty()) {
+             image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/images/perdiste.png")));
+             imageView.setImage(image);
+            idImagenMessage.setImage(image);
+            tableImageView.setImage(null);
+            return true;
+        }
 
+        return false;
+    }
 }

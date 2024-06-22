@@ -2,7 +2,9 @@ package org.example.eiscuno.model.machine;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import org.example.eiscuno.model.card.Card;
@@ -30,7 +32,7 @@ public class ThreadPlayMachine extends Thread {
     private volatile boolean hasPlayerPlayed;
     private Label labelTable;
     private Label labelMachine;
-
+    private CheckBox idShowCarts;
     /**
      * Initializes the thread with the necessary game components.
      *
@@ -42,7 +44,8 @@ public class ThreadPlayMachine extends Thread {
      * @param labelTable the label showing the total number of cards in the deck
      * @param labelMachine the label showing the number of cards the machine has
      */
-    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts) {
+        this.idShowCarts = idShowCarts;
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.table = table;
         this.machinePlayer = machinePlayer;
@@ -72,7 +75,7 @@ public class ThreadPlayMachine extends Thread {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                //printCardsMachine();
+
                 Platform.runLater(this::printCardsMachine);
 
             }
@@ -133,13 +136,18 @@ public class ThreadPlayMachine extends Thread {
      */
     public void printCardsMachine () {
         gridPaneCardsMachine.getChildren().clear();
+
         ArrayList<ICard> currentVisibleMachine = machinePlayer.getCardsPlayer();
-
+        ImageView imagenCard;
         for (int i = 0; i < currentVisibleMachine.size(); i++) {
+            if(idShowCarts.isSelected()){
+                ICard card = currentVisibleMachine.get(i);
+                imagenCard = card.getCard();
+            }else{
+                imagenCard = GetImagenCart();
 
-            ICard card = currentVisibleMachine.get(i);
-
-            ImageView cardImageView = card.getCard();
+            }
+            ImageView cardImageView = imagenCard;
 
 
             gridPaneCardsMachine.add(cardImageView, i, 0);
@@ -163,6 +171,15 @@ public class ThreadPlayMachine extends Thread {
     private void updateLabel(){
         labelTable.setText("Total de cartas : " + gameUno.sizeDeck());
         labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
+    }
+
+    private ImageView GetImagenCart(){
+        Image image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/cards-uno/card_uno.png")));
+        ImageView card = new ImageView(image);
+        card.setY(16);
+        card.setFitHeight(90);
+        card.setFitWidth(70);
+        return card;
     }
 }
 
