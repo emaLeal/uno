@@ -6,6 +6,8 @@ import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This class represents a thread that monitors the player's cards and handles
@@ -56,9 +58,18 @@ public class ThreadSingUNOMachine implements Runnable{
      * If these conditions are met, the human player is penalized by drawing an extra card.
      */
     private void hasOneCardTheHumanPlayer(){
-        if(cardsPlayer.size() == 1 && !humanPlayer.isButtonClick()){
-            gameUno.eatCard(humanPlayer,1);
-            System.out.println("UNO");
+        if(cardsPlayer.size() == 1){
+            Timer timer = new Timer();
+            TimerTask pushButton = new TimerTask() {
+                public void run() {
+                    if (!humanPlayer.isButtonClick()) {
+                        gameUno.eatCard(humanPlayer,1);
+                        System.out.println("UNO");
+                    }
+                }
+            };
+            timer.schedule(pushButton, 1000);
+
         }
     }
 }

@@ -13,9 +13,7 @@ import org.example.eiscuno.model.game.GameUno;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 /**
  * A thread that handles the machine player's turn in the game.
@@ -29,6 +27,7 @@ public class ThreadPlayMachine extends Thread {
     private ImageView tableImageView;
     private GameUno gameUno;
     private GridPane gridPaneCardsMachine;
+    private GridPane getGridPaneCardsPlayer;
     private volatile boolean hasPlayerPlayed;
     private Label labelTable;
     private Label labelMachine;
@@ -45,9 +44,10 @@ public class ThreadPlayMachine extends Thread {
      * @param labelTable the label showing the total number of cards in the deck
      * @param labelMachine the label showing the number of cards the machine has
      */
-    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts, Label colorInteractionLabel) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GridPane gridPaneCardsPlayer, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts, Label colorInteractionLabel) {
         this.idShowCarts = idShowCarts;
         this.gridPaneCardsMachine = gridPaneCardsMachine;
+        this.getGridPaneCardsPlayer = gridPaneCardsPlayer;
         this.table = table;
         this.machinePlayer = machinePlayer;
         this.humanPlayer = humanPlayer;
@@ -73,14 +73,16 @@ public class ThreadPlayMachine extends Thread {
                 }
                 // Aqui iria la logica de colocar la carta
                 try {
+                    getGridPaneCardsPlayer.setDisable(true);
                     Platform.runLater(this::changeColor);
                     putCardOnTheTable();
-                    changeColor();
+
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
                 Platform.runLater(this::printCardsMachine);
+                Platform.runLater(this::changeColor);
 
             }
         }
@@ -96,10 +98,7 @@ public class ThreadPlayMachine extends Thread {
         for (ICard card : machinePlayer.getCardsPlayer()) {
             String typeCurrentBoardCard = currentCardOnBoard.getName().name().split("_")[0];
             String typeCurrentCard = card.getName().name().split("_")[0];
-            System.out.println(currentCardOnBoard.getNumber() + " " + card.getNumber());
-            System.out.println(typeCurrentBoardCard + " " + typeCurrentCard);
-            System.out.println(currentCardOnBoard.getColor() + " " + card.getColor());
-            System.out.println(currentCardOnBoard.getType());
+
             if ((Objects.equals(card.getType(), "Numero") && Objects.equals(currentCardOnBoard.getNumber(), card.getNumber())) ||Objects.equals(typeCurrentBoardCard, typeCurrentCard) || Objects.equals(currentCardOnBoard.getColor(), card.getColor()) || Objects.equals(card.getType(), "Especial")) {
                 index = machinePlayer.getCardsPlayer().indexOf(card);
                 machinePlayer.removeCard(index);
@@ -124,15 +123,23 @@ public class ThreadPlayMachine extends Thread {
                    currentCardOnBoardSpecial.setColor(opciones[randomOption]);
                    System.out.println("NUEVO COLOR " + opciones[randomOption]);
                    hasPlayerPlayed = false;
+                   getGridPaneCardsPlayer.setDisable(false);
                } else {
                    System.out.println("Por defecto");
                    hasPlayerPlayed = false;
+                   getGridPaneCardsPlayer.setDisable(false);
                }
                 table.addCardOnTheTable(card);
                 tableImageView.setImage(card.getImage());
                 found = true;
                 if (machinePlayer.getCardsPlayer().size() == 1) {
-                    machinePlayer.setButtonClick(true);
+                    Timer timer = new Timer();
+                    TimerTask pushButton = new TimerTask() {
+                        public void run() {
+                            machinePlayer.setButtonClick(true);
+                        }
+                    };
+                    timer.schedule(pushButton, 1000);
                 } else {
                     machinePlayer.setButtonClick(false);
                 }
@@ -193,6 +200,7 @@ public class ThreadPlayMachine extends Thread {
     private void updateLabel(){
         labelTable.setText("Total de cartas : " + gameUno.sizeDeck());
         labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
+        changeColor();
     }
 
     /**
@@ -200,6 +208,7 @@ public class ThreadPlayMachine extends Thread {
      */
     private void changeColor() {
         colorInteractionLabel.setText("Color Actual: " + table.getCurrentCardOnTheTable().getColor());
+        colorInteractionLabel.setStyle("-fx-text-fill: "+table.getCurrentCardOnTheTable().getColor().toLowerCase()+";-fx-font-weight: BOLD;");
     }
 
     /**

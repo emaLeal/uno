@@ -47,6 +47,8 @@ public class GameUnoController {
     private CheckBox idShowCarts;
     @FXML
     private Label colorInteractionLabel;
+    @FXML
+    private Button unoButton;
 
     private Player humanPlayer;
     private Player machinePlayer;
@@ -65,12 +67,11 @@ public class GameUnoController {
         initVariables();
         this.gameUno.startGame();
         printCardsHumanPlayer();
-        updateLabel();
         threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer(),this.machinePlayer.getCardsPlayer(),this.machinePlayer,this.humanPlayer,this.gameUno);
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine,this.gameUno, this.labelTable, this.labelMachine, this.idShowCarts, this.colorInteractionLabel);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine, this.gridPaneCardsPlayer,this.gameUno, this.labelTable, this.labelMachine, this.idShowCarts, this.colorInteractionLabel);
         threadPlayMachine.start();
 
         try {
@@ -81,11 +82,11 @@ public class GameUnoController {
             EISCUnoEnum value = EISCUnoEnum.valueOf(opciones[pos] + "_" + String.valueOf(cardNumber));
             ICard initialCard = factoryCard.createCard(value.getFilePath(), "Numero", opciones[pos], String.valueOf(cardNumber), null , value);
             gameUno.playCard(initialCard);
-            colorInteractionLabel.setText("Color Actual: " + initialCard.getColor());
             tableImageView.setImage(initialCard.getImage());
         } catch (Error e) {
             System.out.println("Error: " + e);
         }
+        updateLabel();
     }
 
     /**
@@ -126,11 +127,9 @@ public class GameUnoController {
                                 } else if (card.getName().name().startsWith("FOUR")) {
                                     gameUno.eatCard(machinePlayer, 4);
                                     threadPlayMachine.printCardsMachine();
-                                } else if(card.getName().name().startsWith("WILD") || (card.getName().name().startsWith("RESERVE"))){
-                                    System.out.println("Cambio de color o reversa");
+                                } else if(card.getName().name().startsWith("WILD") || card.getName().name().startsWith("RESERVE") || card.getName().name().startsWith("SKIP")){
+                                    System.out.println("Cambio de color o reversa o saltar turno");
                                 }else {
-                                    gridPaneCardsPlayer.setDisable(true);
-                                    threadPlayMachine.setHasPlayerPlayed(true);
                                     //ejecuta despues que la maquina lanze
                                     TimerTask task = new TimerTask() {
                                         public void run() {
@@ -143,13 +142,16 @@ public class GameUnoController {
                                     Timer timer = new Timer("Timer");
                                     long delay = 3000L;
                                     timer.schedule(task, delay);
+                                    threadPlayMachine.setHasPlayerPlayed(true);
                                 }
                             }
                             if (humanPlayer.getCardsPlayer().size() != 1) {
                                 humanPlayer.setButtonClick(false);
                             }
-                            colorInteractionLabel.setText("Color Actual: " + table.getCurrentCardOnTheTable().getColor());
                             printCardsHumanPlayer();
+                            if (humanPlayer.getCardsPlayer().size() > 1) {
+                                unoButton.setStyle("-fx-background-color: white;-fx-text-fill: red;-fx-font-weight: BOLD;");
+                            }
                             updateLabel();
                         }
                     }catch (Error e) {
@@ -186,10 +188,7 @@ public class GameUnoController {
      */
     private boolean isCardPossible(ICard card) {
         ICard currentGenericCard = table.getCurrentCardOnTheTable();
-
         boolean isPossible = false;
-        System.out.println(currentGenericCard.getColor());
-        System.out.println(currentGenericCard.getType());
         switch (card.getType()) {
             case "Numero":{
                 if (Objects.equals(currentGenericCard.getColor(), card.getColor()) || Objects.equals(currentGenericCard.getNumber(), card.getNumber()))
@@ -266,6 +265,10 @@ public class GameUnoController {
     void updateLabel(){
         labelTable.setText("Total de cartas : " + deck.GetCards().size());
         labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
+        if (humanPlayer.getCardsPlayer().size() > 1)
+            unoButton.setStyle("-fx-background-color: white;-fx-text-fill: red;-fx-font-weight: BOLD;");
+
+        changeColor();
     }
 
     /**
@@ -275,12 +278,16 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
-        if ( humanPlayer.getCardsPlayer().size() == 2){
+        if ( humanPlayer.getCardsPlayer().size() == 1){
             System.out.println("se canto UNO");
             humanPlayer.setButtonClick(true);
+            unoButton.setStyle("-fx-background-color: red;-fx-text-fill: white;-fx-font-weight: BOLD;");
         }
-        if (machinePlayer.getCardsPlayer().size() == 1 && !machinePlayer.isButtonClick())
+        if (machinePlayer.getCardsPlayer().size() == 1 && !machinePlayer.isButtonClick()) {
+            System.out.println("Cantaste uno a la maquina");
             gameUno.eatCard(machinePlayer, 1);
+            unoButton.setStyle("-fx-background-color: darkred;-fx-text-fill: white;-fx-font-weight: BOLD;");
+        }
 
 
         // Implement logic to handle Uno event here
@@ -323,7 +330,6 @@ public class GameUnoController {
             if (currentCardData.getName().name().startsWith("WILD"))
                 threadPlayMachine.setHasPlayerPlayed(true);
             idChooseColor.setVisible(false);
-            colorInteractionLabel.setText("Color Actual: " + color);
         } catch (Error e) {
             System.out.println("Error: " + e);
         }
@@ -367,5 +373,12 @@ public class GameUnoController {
         }
 
         return false;
+    }
+
+    private void changeColor() {
+        if (table.getCurrentCardOnTheTable().getColor() != null) {
+            colorInteractionLabel.setText("Color Actual: " + table.getCurrentCardOnTheTable().getColor());
+            colorInteractionLabel.setStyle("-fx-text-fill: "+table.getCurrentCardOnTheTable().getColor().toLowerCase()+";-fx-font-weight: BOLD;");
+        }
     }
 }
