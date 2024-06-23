@@ -1,6 +1,5 @@
 package org.example.eiscuno.model.player;
 
-import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.card.ICard;
 
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 public class Player implements IPlayer {
     private ArrayList<ICard> cardsPlayer;
     private String typePlayer;
+    private boolean buttonClick;
 
     /**
      * Constructs a new Player object with an empty hand of cards.
@@ -18,6 +18,7 @@ public class Player implements IPlayer {
     public Player(String typePlayer){
         this.cardsPlayer = new ArrayList<ICard>();
         this.typePlayer = typePlayer;
+        this.setButtonClick(false);
     };
 
     /**
@@ -63,5 +64,13 @@ public class Player implements IPlayer {
 
     public String getTypePlayer() {
         return typePlayer;
+    }
+
+    public boolean isButtonClick() {
+        return buttonClick;
+    }
+
+    public void setButtonClick(boolean buttonClick) {
+        this.buttonClick = buttonClick;
     }
 }

@@ -33,6 +33,7 @@ public class ThreadPlayMachine extends Thread {
     private Label labelTable;
     private Label labelMachine;
     private CheckBox idShowCarts;
+    private Label colorInteractionLabel;
     /**
      * Initializes the thread with the necessary game components.
      *
@@ -44,7 +45,7 @@ public class ThreadPlayMachine extends Thread {
      * @param labelTable the label showing the total number of cards in the deck
      * @param labelMachine the label showing the number of cards the machine has
      */
-    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts, Label colorInteractionLabel) {
         this.idShowCarts = idShowCarts;
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.table = table;
@@ -55,6 +56,7 @@ public class ThreadPlayMachine extends Thread {
         this.gameUno = gameUno;
         this.labelMachine = labelMachine;
         this.labelTable = labelTable;
+        this.colorInteractionLabel= colorInteractionLabel;
         printCardsMachine();
     }
     /**
@@ -71,7 +73,9 @@ public class ThreadPlayMachine extends Thread {
                 }
                 // Aqui iria la logica de colocar la carta
                 try {
+                    Platform.runLater(this::changeColor);
                     putCardOnTheTable();
+                    changeColor();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -127,6 +131,11 @@ public class ThreadPlayMachine extends Thread {
                 table.addCardOnTheTable(card);
                 tableImageView.setImage(card.getImage());
                 found = true;
+                if (machinePlayer.getCardsPlayer().size() == 1) {
+                    machinePlayer.setButtonClick(true);
+                } else {
+                    machinePlayer.setButtonClick(false);
+                }
                 break;
             }
 
@@ -186,6 +195,18 @@ public class ThreadPlayMachine extends Thread {
         labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
     }
 
+    /**
+     * Updates the color interaction label to display the current color of the card on the table.
+     */
+    private void changeColor() {
+        colorInteractionLabel.setText("Color Actual: " + table.getCurrentCardOnTheTable().getColor());
+    }
+
+    /**
+     * Loads and returns an ImageView of a card image.
+     *
+     * @return an ImageView containing the image of a card, or null if an error occurs.
+     */
     private ImageView GetImagenCart(){
         try {
             Image image = new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/cards-uno/card_uno.png")));
