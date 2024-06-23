@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Player implements IPlayer {
     private ArrayList<ICard> cardsPlayer;
     private String typePlayer;
-    private boolean buttonClick;
+    private boolean isProtected = false;
 
     /**
      * Constructs a new Player object with an empty hand of cards.
@@ -18,7 +18,6 @@ public class Player implements IPlayer {
     public Player(String typePlayer){
         this.cardsPlayer = new ArrayList<ICard>();
         this.typePlayer = typePlayer;
-        this.setButtonClick(false);
     };
 
     /**
@@ -66,11 +65,12 @@ public class Player implements IPlayer {
         return typePlayer;
     }
 
-    public boolean isButtonClick() {
-        return buttonClick;
+    public boolean getIsProtected() {
+
+        return isProtected;
     }
 
-    public void setButtonClick(boolean buttonClick) {
-        this.buttonClick = buttonClick;
+    public void setIsProtected(boolean isProtected) {
+        this.isProtected = isProtected;
     }
 }

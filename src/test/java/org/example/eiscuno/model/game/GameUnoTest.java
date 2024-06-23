@@ -6,9 +6,7 @@ import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-
 import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

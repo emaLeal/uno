@@ -21,6 +21,7 @@ import java.util.*;
  * the machine player's actions.
  */
 public class ThreadPlayMachine extends Thread {
+    private volatile boolean running = true;
     private Table table;
     private Player machinePlayer;
     private Player humanPlayer;
@@ -33,6 +34,7 @@ public class ThreadPlayMachine extends Thread {
     private Label labelMachine;
     private CheckBox idShowCarts;
     private Label colorInteractionLabel;
+    private ThreadSingUNOMachine threadSingUNOMachine;
     /**
      * Initializes the thread with the necessary game components.
      *
@@ -44,7 +46,8 @@ public class ThreadPlayMachine extends Thread {
      * @param labelTable the label showing the total number of cards in the deck
      * @param labelMachine the label showing the number of cards the machine has
      */
-    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GridPane gridPaneCardsPlayer, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts, Label colorInteractionLabel) {
+    public ThreadPlayMachine(Table table, Player machinePlayer, Player humanPlayer, ImageView tableImageView, GridPane gridPaneCardsMachine, GridPane gridPaneCardsPlayer, GameUno gameUno, Label labelTable, Label labelMachine, CheckBox idShowCarts, Label colorInteractionLabel, ThreadSingUNOMachine threadSingUNOMachine) {
+        this.threadSingUNOMachine = threadSingUNOMachine;
         this.idShowCarts = idShowCarts;
         this.gridPaneCardsMachine = gridPaneCardsMachine;
         this.getGridPaneCardsPlayer = gridPaneCardsPlayer;
@@ -64,7 +67,7 @@ public class ThreadPlayMachine extends Thread {
      * Continuously checks if the human player has played and then makes a move.
      */
     public void run() {
-        while (true) {
+        while (running) {
             if (hasPlayerPlayed) {
                 try {
                     Thread.sleep(2000);
@@ -132,16 +135,23 @@ public class ThreadPlayMachine extends Thread {
                 table.addCardOnTheTable(card);
                 tableImageView.setImage(card.getImage());
                 found = true;
+
                 if (machinePlayer.getCardsPlayer().size() == 1) {
+                    threadSingUNOMachine.setHasActived(true);
+                    machinePlayer.setIsProtected(true);
+                   // machinePlayer.schedule(pushButton, 1000);
                     Timer timer = new Timer();
                     TimerTask pushButton = new TimerTask() {
                         public void run() {
-                            machinePlayer.setButtonClick(true);
+                            System.out.println("se imprimio la maquina");
+                            System.out.println(machinePlayer.getCardsPlayer().size());
+                            Platform.runLater(()->printCardsMachine());
+
                         }
                     };
-                    timer.schedule(pushButton, 1000);
-                } else {
-                    machinePlayer.setButtonClick(false);
+                    Platform.runLater(this::printCardsMachine);
+                    timer.schedule(pushButton, 2500);
+
                 }
                 break;
             }
@@ -150,7 +160,7 @@ public class ThreadPlayMachine extends Thread {
         if (!found) {
             gameUno.eatCard(machinePlayer,1);
 
-            Thread.sleep(1000);
+            Thread.sleep(500);
             Platform.runLater(this::printCardsMachine);
             putCardOnTheTable();
         }
@@ -228,6 +238,9 @@ public class ThreadPlayMachine extends Thread {
             System.out.println("Error: " + e);
             return null;
         }
+    }
+    public void stopThread() {
+        running = false;
     }
 }
 

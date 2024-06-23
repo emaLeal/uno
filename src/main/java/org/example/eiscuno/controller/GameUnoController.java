@@ -18,6 +18,7 @@ import org.example.eiscuno.model.machine.ThreadSingUNOMachine;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
+import org.example.eiscuno.view.GameUnoStage;
 
 import java.util.*;
 
@@ -67,12 +68,13 @@ public class GameUnoController {
         initVariables();
         this.gameUno.startGame();
         printCardsHumanPlayer();
-        threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer(),this.machinePlayer.getCardsPlayer(),this.machinePlayer,this.humanPlayer,this.gameUno);
+        threadSingUNOMachine = new ThreadSingUNOMachine(this.humanPlayer.getCardsPlayer(),this.machinePlayer.getCardsPlayer(),this.machinePlayer,this.humanPlayer,this.gameUno,this.unoButton, this.idImagenMessage);
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
         t.start();
 
-        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine, this.gridPaneCardsPlayer,this.gameUno, this.labelTable, this.labelMachine, this.idShowCarts, this.colorInteractionLabel);
+        threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer,this.humanPlayer ,this.tableImageView, this.gridPaneCardsMachine, this.gridPaneCardsPlayer,this.gameUno, this.labelTable, this.labelMachine, this.idShowCarts, this.colorInteractionLabel,this.threadSingUNOMachine);
         threadPlayMachine.start();
+        threadSingUNOMachine.setThreadPlayMachine(threadPlayMachine);
 
         try {
             String[] opciones = {"GREEN", "YELLOW", "RED", "BLUE"};
@@ -116,6 +118,7 @@ public class GameUnoController {
                     // Aqui deberian verificar si pueden en la tabla jugar esa carta
                     try {
                         if (isCardPossible(card)) {
+                        //if (true) {
                             //System.out.println(card.getName().name().startsWith("TWO"));
                             gameUno.playCard(card);
                             tableImageView.setImage(card.getImage());
@@ -130,6 +133,7 @@ public class GameUnoController {
                                 } else if(card.getName().name().startsWith("WILD") || card.getName().name().startsWith("RESERVE") || card.getName().name().startsWith("SKIP")){
                                     System.out.println("Cambio de color o reversa o saltar turno");
                                 }else {
+                                    gridPaneCardsPlayer.setDisable(true);
                                     //ejecuta despues que la maquina lanze
                                     TimerTask task = new TimerTask() {
                                         public void run() {
@@ -145,13 +149,24 @@ public class GameUnoController {
                                     threadPlayMachine.setHasPlayerPlayed(true);
                                 }
                             }
-                            if (humanPlayer.getCardsPlayer().size() != 1) {
-                                humanPlayer.setButtonClick(false);
+                            System.out.println("TOTAL DE CARTAS");
+                            System.out.println(humanPlayer.getCardsPlayer().size());
+
+                            if (humanPlayer.getCardsPlayer().size() == 1) {
+                                System.out.println("activo el arbol");
+                                threadSingUNOMachine.setHasActived(true);
+                                //unoButton.setDisable(false);
                             }
-                            printCardsHumanPlayer();
+                             /*
                             if (humanPlayer.getCardsPlayer().size() > 1) {
+                                System.out.println("desactivo el boton");
+                                unoButton.setDisable(true);
+                                //humanPlayer.setIsProtected(false);
                                 unoButton.setStyle("-fx-background-color: white;-fx-text-fill: red;-fx-font-weight: BOLD;");
                             }
+
+                             */
+                            printCardsHumanPlayer();
                             updateLabel();
                         }
                     }catch (Error e) {
@@ -265,8 +280,6 @@ public class GameUnoController {
     void updateLabel(){
         labelTable.setText("Total de cartas : " + deck.GetCards().size());
         labelMachine.setText("Cantidad de cartas de la maquina: "+ machinePlayer.getCardsPlayer().size() );
-        if (humanPlayer.getCardsPlayer().size() > 1)
-            unoButton.setStyle("-fx-background-color: white;-fx-text-fill: red;-fx-font-weight: BOLD;");
 
         changeColor();
     }
@@ -278,6 +291,20 @@ public class GameUnoController {
      */
     @FXML
     void onHandleUno(ActionEvent event) {
+        //System.out.println("el jugador se protegio");
+        humanPlayer.setIsProtected(true);
+        machinePlayer.setIsProtected(false);
+        idImagenMessage.setImage(threadSingUNOMachine.getImagenCart());
+        idImagenMessage.setVisible(true);
+        Timer timer = new Timer();
+
+        TimerTask pushButton = new TimerTask() {
+            public void run() {
+                Platform.runLater(()->idImagenMessage.setVisible(false));
+            }
+        };
+        timer.schedule(pushButton, 1000);
+        /*
         if ( humanPlayer.getCardsPlayer().size() == 1){
             System.out.println("se canto UNO");
             humanPlayer.setButtonClick(true);
@@ -289,8 +316,7 @@ public class GameUnoController {
             unoButton.setStyle("-fx-background-color: darkred;-fx-text-fill: white;-fx-font-weight: BOLD;");
         }
 
-
-        // Implement logic to handle Uno event here
+        */
     }
 
     /**
@@ -380,5 +406,13 @@ public class GameUnoController {
             colorInteractionLabel.setText("Color Actual: " + table.getCurrentCardOnTheTable().getColor());
             colorInteractionLabel.setStyle("-fx-text-fill: "+table.getCurrentCardOnTheTable().getColor().toLowerCase()+";-fx-font-weight: BOLD;");
         }
+    }
+
+    @FXML
+    private void endGame(){
+        threadSingUNOMachine.stopThread();
+        threadPlayMachine.stopThread();
+        GameUnoStage.deleteInstance();
+
     }
 }
