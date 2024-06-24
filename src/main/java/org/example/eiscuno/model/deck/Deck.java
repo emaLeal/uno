@@ -119,5 +119,6 @@ public class Deck {
 
     public void updateDeck(ArrayList<ICard> carts){
         deckOfCards.addAll(carts);
+        Collections.shuffle(deckOfCards);
     }
 }
