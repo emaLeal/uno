@@ -1,6 +1,5 @@
 package org.example.eiscuno.model.table;
 
-import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.card.ICard;
 
 import java.util.ArrayList;
